@@ -1,0 +1,1 @@
+The main activity is "IdeaActivity". To merge the activity with the main branch, set a click listener for each date to start this activity, and synchronize the database name and operation with the main project.
