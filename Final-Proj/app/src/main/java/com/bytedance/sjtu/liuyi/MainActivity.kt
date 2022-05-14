@@ -32,6 +32,9 @@ class MainActivity : AppCompatActivity(), OnCalendarSelectListener, OnCalendarLo
     var mCalendarView: CalendarView? = null
     var mRelativeTool: RelativeLayout? = null
 
+    private var calenderYear : String? = null
+    private var calenderMonth : String? = null
+    private var calenderDay : String? = null
     private lateinit var allTaskAtOneDayBtn: Button
     private lateinit var addNewTaskBtn : Button
     private lateinit var taskThumbnailAdapter: TaskThumbnailAdapter
@@ -124,11 +127,20 @@ class MainActivity : AppCompatActivity(), OnCalendarSelectListener, OnCalendarLo
         }
 
         viewIdeaItemListViewButton!!.setOnClickListener {
+            if (calenderYear == null) {
+                calenderYear = mCalendarView!!.curYear.toString()
+            }
+            if (calenderMonth == null) {
+                calenderMonth = mCalendarView!!.curMonth.toString()
+            }
+            if (calenderDay == null) {
+                calenderDay = mCalendarView!!.curDay.toString()
+            }
             startActivity(Intent().apply {
                 setClass(this@MainActivity, IdeaActivity::class.java)
-                putExtra("year",mCalendarView!!.curYear)
-                putExtra("month",mCalendarView!!.curMonth)
-                putExtra("day",mCalendarView!!.curDay)
+                putExtra("year",calenderYear)
+                putExtra("month",calenderMonth)
+                putExtra("day",calenderDay)
             })
         }
     }
@@ -203,6 +215,9 @@ class MainActivity : AppCompatActivity(), OnCalendarSelectListener, OnCalendarLo
     override fun onCalendarSelect(calendar: Calendar, isClick: Boolean) {
         //Log.e("onDateSelected", "  -- " + calendar.getYear() + "  --  " + calendar.getMonth() + "  -- " + calendar.getDay());
 //        mTextLunar!!.visibility = VISIBLE
+        calenderYear = calendar.year.toString()
+        calenderMonth = calendar.month.toString()
+        calenderDay = calendar.day.toString()
         mTextYear!!.visibility = VISIBLE
         mTextMonthDay!!.text = calendar.month.toString() + "月" + calendar.day + "日"
         mTextYear!!.text = calendar.year.toString()

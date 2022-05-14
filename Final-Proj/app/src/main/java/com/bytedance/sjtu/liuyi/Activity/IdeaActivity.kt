@@ -51,10 +51,10 @@ class IdeaActivity : AppCompatActivity() {
             intent = Intent(this, IdeaItemCreationActivity::class.java)
             ideaItemRequestLauncher.launch(intent)
         }
-        setDatabaseTestItem(true)    // if set true, default items will be inserted into database for testing.
+        setDatabaseTestItem(false)    // if set true, default items will be inserted into database for testing.
         bindDatabase()
         initRecyclerView()
-        clearDatabaseItem()
+//        clearDatabaseItem()
     }
 
     private fun getParameterBundle(): Bundle? {
@@ -80,11 +80,11 @@ class IdeaActivity : AppCompatActivity() {
     }
 
     private fun inflateTestDateBundle() {
-        if (bundleTestItem) {
-            intent.putExtra("year", "2022")
-            intent.putExtra("month", "05")
-            intent.putExtra("day", "14")
-        }
+//        if (bundleTestItem) {
+//            intent.putExtra("year", "2022")
+//            intent.putExtra("month", "05")
+//            intent.putExtra("day", "14")
+//        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -120,13 +120,11 @@ class IdeaActivity : AppCompatActivity() {
     }
 
     private fun initTestIdeaItem() {
-        val ideaItemList = mutableListOf(
-            IdeaItem("2022-05-14", "Keep simple, keep stupid.", "", "", "2022-05-10-22-43-24"),
-            IdeaItem("2022-02-23", "Have a heart of spring, ecstatic to in full bloom.", "", "", "2022-02-23-15-42-52"),
-            )
-        for (ideaItem in ideaItemList) {
-            dbHelper.insertIdeaItem(db, ideaItem)
-        }
+//        val testIdeaItem = IdeaItem(dateStr, "Keep simple, keep stupid.", "", "", "$dateStr-22-43-24")
+//        val ideaList = dbHelper.getIdeaItemListByDate(dateStr)
+//        if (ideaList.isEmpty()) {
+//            dbHelper.insertIdeaItem(db, testIdeaItem)
+//        }
     }
 
     private fun clearDatabaseItem() {
