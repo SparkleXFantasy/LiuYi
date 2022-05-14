@@ -20,6 +20,7 @@ import android.content.Intent
 import android.util.Log
 import com.bytedance.sjtu.liuyi.Activity.DoneTaskShowActivity
 import com.bytedance.sjtu.liuyi.Activity.TaskStartActivity
+import com.bytedance.sjtu.liuyi.Activity.convertSecondsToFormattedTime
 import org.w3c.dom.Text
 
 /**
@@ -34,7 +35,6 @@ class TaskThumbnailAdapter(activity: MainActivity) : RecyclerView.Adapter<TaskTh
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskElementViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.activity_tumbnail_recyclerview_entry, parent, false)       // 内容横向铺满
         val viewHolder = TaskElementViewHolder(view)
-
         var taskStatusCheckbox = view.findViewById<CheckBox>(R.id.task_status_checkbox)
 
         // todo: 添加对 checkbox 的点击监听事件
@@ -46,13 +46,15 @@ class TaskThumbnailAdapter(activity: MainActivity) : RecyclerView.Adapter<TaskTh
         viewHolder.itemView.setOnLongClickListener {
             if (taskStatusCheckbox.isChecked) {
                 val intent = Intent(main_activity, DoneTaskShowActivity::class.java)
-                intent.putExtra("task_tag", viewHolder.task_entry_date.text)
+                intent.putExtra("flag", "1")
+                intent.putExtra("task_tag", viewHolder.task_entry_date.text.toString())
                 main_activity.startActivity(intent)
                 false
             }
             else {
                 val intent = Intent(main_activity, TodoTaskEditActivity::class.java)
-                intent.putExtra("task_tag", viewHolder.task_entry_date.text)
+                intent.putExtra("flag", "1")
+                intent.putExtra("task_tag", viewHolder.task_entry_date.text.toString())
                 main_activity.startActivity(intent)
                 false
             }
@@ -62,7 +64,9 @@ class TaskThumbnailAdapter(activity: MainActivity) : RecyclerView.Adapter<TaskTh
         viewHolder.itemView.setOnClickListener {
             if (!taskStatusCheckbox.isChecked) {
                 val intent = Intent(main_activity, TaskStartActivity::class.java)
-                intent.putExtra("task_tag", viewHolder.task_entry_date.text)
+                intent.putExtra("task_tag", viewHolder.task_entry_date.text.toString())
+                intent.putExtra("flag", "1")
+                Log.d("############ Pos_3", viewHolder.task_entry_date.text.toString())
                 main_activity.startActivity(intent)
             }
         }
@@ -72,10 +76,11 @@ class TaskThumbnailAdapter(activity: MainActivity) : RecyclerView.Adapter<TaskTh
     @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: TaskElementViewHolder, idx: Int) {
-        holder.task_entry_date.text = "${taskList[idx].task_tag}"
-        holder.task_entry_title.text = "${taskList[idx].task_title}"
+        holder.task_entry_date.setText(taskList[idx].task_tag)
+        holder.task_entry_title.setText(taskList[idx].task_title)
+        var focus_time = convertSecondsToFormattedTime(taskList[idx].task_duration?.toLong())
+        holder.task_entry_duration.setText("已专注${focus_time}")
         holder.task_entry_status.isChecked = taskList[idx].task_status != "todo"
-        holder.task_entry_duration.text = "${taskList[idx].task_duration}"
     }
 
     override fun getItemCount(): Int = taskList.size
@@ -85,8 +90,8 @@ class TaskThumbnailAdapter(activity: MainActivity) : RecyclerView.Adapter<TaskTh
         var result : Int
         if (task_1.task_status == task_2.task_status) {
             val dateformatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd-hh-mm-ss")
-            val date_1 : Date = dateformatter.parse(task_1.task_date)
-            val date_2 : Date = dateformatter.parse(task_2.task_date)
+            val date_1 : Date = dateformatter.parse(task_1.task_tag)
+            val date_2 : Date = dateformatter.parse(task_2.task_tag)
             if (date_1.before(date_2)) result = -1
             else result = 1
         } else {
@@ -102,7 +107,7 @@ class TaskThumbnailAdapter(activity: MainActivity) : RecyclerView.Adapter<TaskTh
         taskList.addAll(myList)
         taskList.sortWith(myComparator)
         Log.d("############", taskList.toString())
-        notifyDataSetChanged()              // 当数据发生变化时，更新 view
+        notifyDataSetChanged()                          // 当数据发生变化时，更新 view
     }
 
     class TaskElementViewHolder(view: View) : RecyclerView.ViewHolder(view) {

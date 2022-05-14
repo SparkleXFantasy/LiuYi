@@ -6,6 +6,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.SystemClock
+import android.util.Log
 import android.widget.*
 import androidx.annotation.RequiresApi
 import com.bytedance.sjtu.liuyi.TodoListDBHelper
@@ -28,7 +29,7 @@ class TaskStartActivity : AppCompatActivity() {
     private var base_time : Long = 0                                // 本次计时基准时间
     private var total_cur_duration : Long = 0                       // 用户本次在该界面下，总共 focus 的时间 (单位 ms)
     private var latest_duration : Long? = 0
-    private val dbHelper = TodoListDBHelper(this, "ToDoList_v9.db")
+    private val dbHelper = TodoListDBHelper(this, TODOLIST_DB_NAME)
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,11 +54,13 @@ class TaskStartActivity : AppCompatActivity() {
                 val current_time = SystemClock.elapsedRealtime()
                 val tmpDuration = current_time - base_time
                 total_cur_duration += tmpDuration
+                base_time = 0
                 Toast.makeText(this, "计时停止", Toast.LENGTH_SHORT).show()
             }
         }
 
         clock_reset_btn.setOnClickListener {
+            clock_btn.isChecked = false
             task_clock.stop()
             if (base_time > 0) {
                 val current_time = SystemClock.elapsedRealtime()
@@ -83,7 +86,7 @@ class TaskStartActivity : AppCompatActivity() {
         // 更新显示
         val curText = convertSecondsToFormattedTime(latest_duration)
         runOnUiThread(Runnable {
-            task_duration_textview.setText("该任务已专注${curText}")
+            task_duration_textview.setText("当前任务已专注${curText}")
         })
     }
 
@@ -112,13 +115,14 @@ class TaskStartActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     private fun showContent(Tag : String) : Boolean {
         val myMap = dbHelper.queryTaskInfo(Tag)
-        if (myMap["task_exist"] === "True") {
+        Log.d("######", myMap["task_exist"].toString())
+        if (myMap["task_exist"] == "True") {
             task_tag = myMap["task_tag"]!!
             task_title_textview.setText(myMap["task_title"])
             task_detail_textview.setText(myMap["task_title"])
-            latest_duration = myMap["task_duration"]?.toLong()                 // 获取总秒数
+            latest_duration = myMap["task_duration"]?.toLong()                      // 获取总秒数
             val duration : String = convertSecondsToFormattedTime(latest_duration)
-            task_duration_textview.setText("该任务已专注${duration}")              // 表示为 xx 时 xx 分 xx 秒
+            task_duration_textview.setText("该任务已专注${duration}")                 // 表示为 xx 时 xx 分 xx 秒
             return true
         }
         else {
@@ -127,10 +131,4 @@ class TaskStartActivity : AppCompatActivity() {
         }
     }
 
-    private fun convertSecondsToFormattedTime (seconds : Long?) : String {
-        val hour : String = (seconds!! / 3600).toString()
-        val minute : String =  (seconds % 3600 / 60).toString()
-        val sec : String = (seconds % 3600 % 60).toString()
-        return " ${hour} 时 ${minute} 分 ${sec} 秒 "
-    }
 }

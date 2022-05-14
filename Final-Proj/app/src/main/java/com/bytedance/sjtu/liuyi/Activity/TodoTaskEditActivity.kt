@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.EditText
@@ -21,7 +22,6 @@ class TodoTaskEditActivity : AppCompatActivity() {
     private lateinit var task_title_edittext: EditText
     private lateinit var task_detail_edittext: EditText
     private lateinit var task_edit_toolbar : androidx.appcompat.widget.Toolbar
-    private lateinit var save_task_button : MenuItem
     private var task_exist = false
     private lateinit var old_task_tag : String
     private lateinit var db : SQLiteDatabase
@@ -53,7 +53,7 @@ class TodoTaskEditActivity : AppCompatActivity() {
         setSupportActionBar(task_edit_toolbar)
         getSupportActionBar()?.setDisplayHomeAsUpEnabled(true);
         task_edit_toolbar.setNavigationOnClickListener {
-            Toast.makeText(this, "已取消", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "已返回", Toast.LENGTH_SHORT).show()
             finish()
         }
     }
@@ -73,7 +73,7 @@ class TodoTaskEditActivity : AppCompatActivity() {
                 task_detail_edittext = findViewById<EditText>(R.id.task_detail_edit)
 
                 val dateFormatterForTag = DateTimeFormatter.ofPattern("yyyy-MM-dd-hh-mm-ss")
-                val dateFormatterForDate = DateTimeFormatter.ofPattern("yyyy-mm-dd")
+                val dateFormatterForDate = DateTimeFormatter.ofPattern("yyyy-MM-dd")
                 val new_task_tag = dateFormatterForTag.format(LocalDateTime.now())
                 val task_date = dateFormatterForDate.format(LocalDateTime.now())
                 var task_title = task_title_edittext.text.toString()
@@ -97,7 +97,7 @@ class TodoTaskEditActivity : AppCompatActivity() {
                     newTask.put("task_duration", "0")
                     db.insert("task", null, newTask)
                 }
-
+                Log.d ("#######", newTask.toString())
                 Toast.makeText(this, "保存成功", Toast.LENGTH_SHORT).show()
                 finish()
 //            Log.d("DataBaseInsert", "————————————————")
@@ -111,7 +111,6 @@ class TodoTaskEditActivity : AppCompatActivity() {
 //            Log.d("MainStarted", "##################")
             }
         }
-
         return super.onOptionsItemSelected(item)
     }
 

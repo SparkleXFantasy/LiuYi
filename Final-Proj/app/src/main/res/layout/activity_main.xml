@@ -66,6 +66,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#fff"
+        android:layout_margin="10dp"
         app:current_day_lunar_text_color="#ff0000"
         app:current_day_text_color="#ff0000"
         app:current_month_lunar_text_color="#CFCFCF"
@@ -77,6 +78,8 @@
         app:min_year="2008"
         app:min_year_day="1"
         app:min_year_month="1"
+        app:calendar_height="35dp"
+        app:calendar_padding="10dp"
         app:month_view="com.bytedance.sjtu.liuyi.custom.SimpleMonthView"
         app:month_view_show_mode="mode_only_current"
         app:other_month_lunar_text_color="#e1e1e1"
@@ -116,7 +119,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"

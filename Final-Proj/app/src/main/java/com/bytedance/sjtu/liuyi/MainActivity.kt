@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity(), OnCalendarSelectListener, OnCalendarLo
     private lateinit var addNewTaskBtn : Button
     private lateinit var taskThumbnailAdapter: TaskThumbnailAdapter
     private var taskList = mutableListOf<TaskElement>()
-
+    var isPause = false
     var ideabutton: Button?=null
     var createbutton: Button?=null
     private var mYear = 0
@@ -57,6 +57,21 @@ class MainActivity : AppCompatActivity(), OnCalendarSelectListener, OnCalendarLo
         initData()
     }
 
+    override fun onPause() {
+        super.onPause()
+        isPause = true
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onResume() {
+        super.onResume()
+        if (isPause) {
+            isPause = false
+            updateTaskListFromDB()
+            taskThumbnailAdapter.updateTaskList(taskList)
+        }
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setRecyclerView() {
         val taskThumbnailRecyclerView = findViewById<RecyclerView>(R.id.task_thumbnail_recyclerview)
@@ -65,13 +80,14 @@ class MainActivity : AppCompatActivity(), OnCalendarSelectListener, OnCalendarLo
         taskThumbnailRecyclerView.layoutManager = taskThumbnailLinearLayoutManager
         taskThumbnailAdapter = TaskThumbnailAdapter(this)
         updateTaskListFromDB()
+        Log.d("########   pos_1", taskList.toString())
         taskThumbnailAdapter.updateTaskList(taskList)
         taskThumbnailRecyclerView.adapter = taskThumbnailAdapter
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun updateTaskListFromDB() {
-        val myDateFormatter = DateTimeFormatter.ofPattern("yyyy-mm-dd")
+        val myDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         val today = myDateFormatter.format(LocalDateTime.now())
         taskList.clear()
         taskList.addAll(todolist_dbHelper.queryTasksInOneDay(today))
@@ -89,7 +105,7 @@ class MainActivity : AppCompatActivity(), OnCalendarSelectListener, OnCalendarLo
 
         // 查看详情按钮
         allTaskAtOneDayBtn.setOnClickListener{
-            val dateFormatterForDate = DateTimeFormatter.ofPattern("yyyy-mm-dd")
+            val dateFormatterForDate = DateTimeFormatter.ofPattern("yyyy-MM-dd")
             val new_task_tag = dateFormatterForDate.format(LocalDateTime.now())
             val intent = Intent(this, AllTaskActivity::class.java)
             intent.putExtra("task_date",new_task_tag)
@@ -113,7 +129,6 @@ class MainActivity : AppCompatActivity(), OnCalendarSelectListener, OnCalendarLo
     fun initView() {
         mTextMonthDay = findViewById(R.id.tv_month_day)
         mTextYear = findViewById(R.id.tv_year)
-//        mTextLunar = findViewById(R.id.tv_lunar)
         mRelativeTool = findViewById(R.id.rl_tool)
         mCalendarView = findViewById(R.id.calendarView)
         allTaskAtOneDayBtn = findViewById(R.id.all_task_at_one_day_btn)

@@ -3,6 +3,7 @@ package com.bytedance.sjtu.liuyi
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import com.bytedance.sjtu.liuyi.DataClass.TaskElement
 
@@ -24,8 +25,10 @@ class TodoListDBHelper(val context: Context, name: String, version: Int = 1): SQ
 
     // 根据 task_tag 查询 task 其它内容, 返回 Map (String -> String)
     fun queryTaskInfo(task_tag : String) : MutableMap<String?, String?>{
+        Log.d("########## Pos_4", task_tag)
         var myMap = mutableMapOf<String?, String?>(Pair("task_exist", "False"))
-        val cursor = this.readableDatabase.query("task", arrayOf("task_title", "task_status", "task_date", "task_duration", "task_detail"), "task_tag = ?", arrayOf(task_tag), null, null, null)
+        val cursor = this.writableDatabase.query("task", null, "task_tag = ?", arrayOf(task_tag), null, null, null)
+        Log.d("######### Pos_6", cursor.toString())
         while (cursor.moveToNext()) {
             val task_title: String? = cursor.getString(cursor.getColumnIndexOrThrow("task_title"))
             val task_detail : String? = cursor.getString(cursor.getColumnIndexOrThrow("task_detail"))
@@ -40,6 +43,7 @@ class TodoListDBHelper(val context: Context, name: String, version: Int = 1): SQ
             myMap.put("task_tag", task_tag)
             myMap["task_exist"] = "True"
         }
+        Log.d("######## Pos_5", myMap.toString())
         return myMap
     }
 

@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginVertical="60dp"
+        android:layout_marginVertical="20dp"
         card:cardCornerRadius="10dp"
         card:cardElevation="10dp"
         card:cardMaxElevation="10dp" >

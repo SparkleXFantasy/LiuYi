@@ -2,7 +2,7 @@
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginVertical="60dp"
+        android:layout_marginVertical="10dp"
         card:cardCornerRadius="10dp"
         card:cardElevation="10dp"
         card:cardMaxElevation="10dp" >
@@ -18,57 +18,53 @@
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_margin="20dp">
+            android:orientation="horizontal"
+            android:layout_margin="10dp">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="0.9">
-
-                    <TextView
-                        android:id="@+id/task_entry_date"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="left"
-                        android:textSize="20sp"
-                        android:layout_margin="10dp"
-                        android:text="date"/>
-
-                    <TextView
-                        android:id="@+id/task_entry_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left"
-                        android:layout_margin="10dp"
-                        android:textSize="20sp"
-                        android:text="title"/>
-                </LinearLayout>
-
-                <CheckBox
-                    android:id="@+id/task_status_checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="20dp" />
-
-            </LinearLayout>
-
-
-            <TextView
-                android:id="@+id/task_entry_duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:textSize="15sp"
-                android:text="duration"/>
+                android:orientation="vertical"
+                android:layout_weight="0.8">
+
+                <TextView
+                    android:id="@+id/task_entry_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="left"
+                    android:textSize="15sp"
+                    android:layout_marginHorizontal="10dp"
+                    android:text="date"/>
+
+                <TextView
+                    android:id="@+id/task_entry_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textSize="20sp"
+                    android:layout_marginHorizontal="10dp"
+                    android:textStyle="bold"
+                    android:text="title"/>
+
+                <TextView
+                    android:id="@+id/task_entry_duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginHorizontal="10dp"
+                    android:textSize="15sp"
+                    android:text="duration"/>
+            </LinearLayout>
+
+            <CheckBox
+                android:id="@+id/task_status_checkbox"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_weight="0.1"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_margin="10dp" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.cardview.widget.CardView>
