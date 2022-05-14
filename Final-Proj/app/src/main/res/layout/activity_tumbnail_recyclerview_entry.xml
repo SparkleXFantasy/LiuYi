@@ -57,13 +57,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginL="20dp" />
+                    android:layout_margin="20dp" />
 
             </LinearLayout>
 
 
             <TextView
-                android:id="@+id/single_task_duration"
+                android:id="@+id/task_entry_duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"

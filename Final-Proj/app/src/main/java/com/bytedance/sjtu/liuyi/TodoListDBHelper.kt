@@ -10,7 +10,7 @@ import com.bytedance.sjtu.liuyi.DataClass.TaskElement
  * 数据库中新建 table : task
  */
 
-class DBHelper(val context: Context, name: String, version: Int = 1): SQLiteOpenHelper(context, name, null, version) {
+class TodoListDBHelper(val context: Context, name: String, version: Int = 1): SQLiteOpenHelper(context, name, null, version) {
     private val TodoListCreate by lazy { "create table task(" + " id integer primary key autoincrement, " + " task_tag text, " + " task_title text, " +  " task_status text, " + " task_detail text, " + " task_duration text, " + " task_date text) " }
     override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL(TodoListCreate)

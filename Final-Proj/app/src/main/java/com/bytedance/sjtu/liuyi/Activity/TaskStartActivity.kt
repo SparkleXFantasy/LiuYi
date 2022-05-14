@@ -8,7 +8,7 @@ import android.os.Bundle
 import android.os.SystemClock
 import android.widget.*
 import androidx.annotation.RequiresApi
-import com.bytedance.sjtu.liuyi.DBHelper
+import com.bytedance.sjtu.liuyi.TodoListDBHelper
 import com.bytedance.sjtu.liuyi.R
 
 /*
@@ -28,7 +28,7 @@ class TaskStartActivity : AppCompatActivity() {
     private var base_time : Long = 0                                // 本次计时基准时间
     private var total_cur_duration : Long = 0                       // 用户本次在该界面下，总共 focus 的时间 (单位 ms)
     private var latest_duration : Long? = 0
-    private val dbHelper = DBHelper(this, "ToDoList_v9.db")
+    private val dbHelper = TodoListDBHelper(this, "ToDoList_v9.db")
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {

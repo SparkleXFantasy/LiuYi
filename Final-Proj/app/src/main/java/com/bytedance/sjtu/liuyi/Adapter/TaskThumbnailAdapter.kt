@@ -17,8 +17,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.Comparator
 import android.content.Intent
+import android.util.Log
 import com.bytedance.sjtu.liuyi.Activity.DoneTaskShowActivity
 import com.bytedance.sjtu.liuyi.Activity.TaskStartActivity
+import org.w3c.dom.Text
 
 /**
  * List: 有序接口, 只能读取, 不能更改元素;
@@ -73,6 +75,7 @@ class TaskThumbnailAdapter(activity: MainActivity) : RecyclerView.Adapter<TaskTh
         holder.task_entry_date.text = "${taskList[idx].task_tag}"
         holder.task_entry_title.text = "${taskList[idx].task_title}"
         holder.task_entry_status.isChecked = taskList[idx].task_status != "todo"
+        holder.task_entry_duration.text = "${taskList[idx].task_duration}"
     }
 
     override fun getItemCount(): Int = taskList.size
@@ -94,10 +97,11 @@ class TaskThumbnailAdapter(activity: MainActivity) : RecyclerView.Adapter<TaskTh
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updatetaskList(myList : List<TaskElement>) {
+    fun updateTaskList(myList : List<TaskElement>) {
         taskList.clear()
         taskList.addAll(myList)
         taskList.sortWith(myComparator)
+        Log.d("############", taskList.toString())
         notifyDataSetChanged()              // 当数据发生变化时，更新 view
     }
 
@@ -105,5 +109,6 @@ class TaskThumbnailAdapter(activity: MainActivity) : RecyclerView.Adapter<TaskTh
         val task_entry_date : TextView = view.findViewById<TextView>(R.id.task_entry_date)
         val task_entry_title: TextView = view.findViewById<TextView>(R.id.task_entry_title)
         val task_entry_status: CheckBox = view.findViewById<CheckBox>(R.id.task_status_checkbox)
+        val task_entry_duration : TextView = view.findViewById<TextView>(R.id.task_entry_duration)
     }
 }

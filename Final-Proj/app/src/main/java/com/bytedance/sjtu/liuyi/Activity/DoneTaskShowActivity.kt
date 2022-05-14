@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import com.bytedance.sjtu.liuyi.DBHelper
+import com.bytedance.sjtu.liuyi.TodoListDBHelper
 import com.bytedance.sjtu.liuyi.R
 
 /*
@@ -17,7 +17,7 @@ class DoneTaskShowActivity : AppCompatActivity() {
     private lateinit var done_task_show_detail: TextView
     private lateinit var done_task_show_duration: TextView
     private lateinit var done_task_show_toolbar : androidx.appcompat.widget.Toolbar
-    private val dbHelper = DBHelper(this, "ToDoList_v9.db")
+    private val dbHelper = TodoListDBHelper(this, "ToDoList_v9.db")
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -16,6 +16,8 @@
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
         <activity
             android:name=".Activity.TodoTaskEditActivity"
+            android:label="TodoTaskEditActivity"
+            android:theme="@style/Theme.LiuYi.NoActionBar"
             android:exported="false" />
         <activity
             android:name=".Activity.TaskStartActivity"
@@ -29,18 +31,17 @@
             android:name=".Activity.AllTaskActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity2"
-            android:exported="false" />
-        <activity
             android:name=".CreateReport"
             android:exported="false" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

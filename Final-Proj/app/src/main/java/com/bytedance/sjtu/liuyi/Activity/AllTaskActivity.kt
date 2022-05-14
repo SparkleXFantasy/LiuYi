@@ -2,30 +2,32 @@ package com.bytedance.sjtu.liuyi.Activity
 
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
-import android.os.PersistableBundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bytedance.sjtu.liuyi.Adapter.AllTaskAdapter
-import com.bytedance.sjtu.liuyi.DBHelper
+import com.bytedance.sjtu.liuyi.TodoListDBHelper
 import com.bytedance.sjtu.liuyi.DataClass.TaskElement
 import com.bytedance.sjtu.liuyi.R
 
 class AllTaskActivity : AppCompatActivity(){
     private lateinit var db : SQLiteDatabase
     private lateinit var singleTaskAdapter : AllTaskAdapter
-    private lateinit var taskList : MutableList<TaskElement>
+    private var taskList = mutableListOf<TaskElement>()
     private lateinit var all_task_toolbar : androidx.appcompat.widget.Toolbar
-    private val dbHelper : DBHelper = DBHelper(this, "TodoList_v9.db")
+    private val dbHelper : TodoListDBHelper = TodoListDBHelper(this, TODOLIST_DB_NAME)
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        this.setContentView(R.layout.activity_all_task)
         val date = intent.extras?.getString("task_date").toString()
         db = dbHelper.openDB()
+        Log.d("##########", "Entered Successful")
 
         // 添加顶部返回按钮
-        all_task_toolbar = findViewById(R.id.all_task_toolbar)
+        all_task_toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.all_task_toolbar)
         setSupportActionBar(all_task_toolbar)
         // 设置左上角返回箭头
         all_task_toolbar.setNavigationOnClickListener {

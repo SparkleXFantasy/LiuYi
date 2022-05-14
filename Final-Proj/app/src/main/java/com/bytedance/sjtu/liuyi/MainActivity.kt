@@ -2,73 +2,99 @@ package com.bytedance.sjtu.liuyi
 import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.content.Intent
+import android.database.sqlite.SQLiteDatabase
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.RelativeLayout
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.bytedance.sjtu.liuyi.Activity.AllTaskActivity
 import com.haibin.calendarview.Calendar
-import com.haibin.calendarview.CalendarLayout
 import com.haibin.calendarview.CalendarView
 import com.haibin.calendarview.CalendarView.*
 import com.haibin.calendarview.TrunkBranchAnnals
 import androidx.annotation.RequiresApi
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.bytedance.sjtu.liuyi.Activity.TODOLIST_DB_NAME
+import com.bytedance.sjtu.liuyi.Activity.TodoTaskEditActivity
+import com.bytedance.sjtu.liuyi.Adapter.TaskThumbnailAdapter
+import com.bytedance.sjtu.liuyi.DataClass.TaskElement
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 
-class MainActivity : AppCompatActivity(), OnCalendarSelectListener,
-    OnCalendarLongClickListener, OnMonthChangeListener, OnYearChangeListener,
-    OnWeekChangeListener, OnViewChangeListener, OnCalendarInterceptListener,
-    OnYearViewChangeListener, DialogInterface.OnClickListener, View.OnClickListener {
+class MainActivity : AppCompatActivity(), OnCalendarSelectListener, OnCalendarLongClickListener, OnMonthChangeListener, OnYearChangeListener, OnWeekChangeListener, OnViewChangeListener, OnCalendarInterceptListener, OnYearViewChangeListener, DialogInterface.OnClickListener, View.OnClickListener {
     var mTextMonthDay: TextView? = null
     var mTextYear: TextView? = null
     var mTextLunar: TextView? = null
-//    var mTextCurrentDay: TextView? = null
     var mCalendarView: CalendarView? = null
     var mRelativeTool: RelativeLayout? = null
-    var todobutton: Button?=null
+
+    private lateinit var allTaskAtOneDayBtn: Button
+    private lateinit var addNewTaskBtn : Button
+    private lateinit var taskThumbnailAdapter: TaskThumbnailAdapter
+    private var taskList = mutableListOf<TaskElement>()
+
     var ideabutton: Button?=null
     var createbutton: Button?=null
     private var mYear = 0
-//    var mCalendarLayout: CalendarLayout? = null
+//        var mCalendarLayout: CalendarLayout? = null
 
+    private lateinit var todolist_db : SQLiteDatabase
+    private val todolist_dbHelper : TodoListDBHelper = TodoListDBHelper(this, TODOLIST_DB_NAME)
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        todolist_db = todolist_dbHelper.openDB()
         initView()
+        setRecyclerView()
+        setClickEvents()
         initData()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    @SuppressLint("SetTextI18n")
-    fun initView() {
-        mTextMonthDay = findViewById(R.id.tv_month_day)
-        mTextYear = findViewById(R.id.tv_year)
-//        mTextLunar = findViewById(R.id.tv_lunar)
-        mRelativeTool = findViewById(R.id.rl_tool)
-        mCalendarView = findViewById(R.id.calendarView)
-        todobutton = findViewById(R.id.todobutton)
-        createbutton=findViewById(R.id.createreport)
-        //mCalendarView.setRange(2018, 7, 1, 2019, 4, 28);
-//        mTextCurrentDay = findViewById(R.id.tv_current_day)
-        todobutton!!.setOnClickListener{
+    private fun setRecyclerView() {
+        val taskThumbnailRecyclerView = findViewById<RecyclerView>(R.id.task_thumbnail_recyclerview)
+        val taskThumbnailLinearLayoutManager = LinearLayoutManager(this)
+        taskThumbnailLinearLayoutManager.orientation = LinearLayoutManager.VERTICAL
+        taskThumbnailRecyclerView.layoutManager = taskThumbnailLinearLayoutManager
+        taskThumbnailAdapter = TaskThumbnailAdapter(this)
+        updateTaskListFromDB()
+        taskThumbnailAdapter.updateTaskList(taskList)
+        taskThumbnailRecyclerView.adapter = taskThumbnailAdapter
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun updateTaskListFromDB() {
+        val myDateFormatter = DateTimeFormatter.ofPattern("yyyy-mm-dd")
+        val today = myDateFormatter.format(LocalDateTime.now())
+        taskList.clear()
+        taskList.addAll(todolist_dbHelper.queryTasksInOneDay(today))
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun setClickEvents () {
+        // 添加新任务按钮
+        addNewTaskBtn.setOnClickListener {
+            val intent = Intent(this, TodoTaskEditActivity::class.java)
+            intent.putExtra("flag", "0")            // flag = 0 表示新建 task
+            startActivity(intent)
+            Log.d("#########", "Start TodoTaskEditActivity")
+        }
+
+        // 查看详情按钮
+        allTaskAtOneDayBtn.setOnClickListener{
             val dateFormatterForDate = DateTimeFormatter.ofPattern("yyyy-mm-dd")
             val new_task_tag = dateFormatterForDate.format(LocalDateTime.now())
-            startActivity(Intent().apply {
-                setClass(this@MainActivity, AllTaskActivity::class.java)
-                putExtra("task_date",new_task_tag)
-                putExtra("year",mCalendarView!!.curYear)
-                putExtra("month",mCalendarView!!.curMonth)
-                putExtra("day",mCalendarView!!.curDay)
-            })
+            val intent = Intent(this, AllTaskActivity::class.java)
+            intent.putExtra("task_date",new_task_tag)
+            startActivity(intent)
+            Log.d("##########", "Start AllTaskActivity")
         }
 
         createbutton!!.setOnClickListener{
@@ -80,17 +106,20 @@ class MainActivity : AppCompatActivity(), OnCalendarSelectListener,
                 putExtra("day",mCalendarView!!.curDay)
             })
         }
-//        mTextMonthDay!!.setOnClickListener(View.OnClickListener {
-////            if (!mCalendarLayout!!.isExpand) {
-////                mCalendarLayout!!.expand()
-////                return@OnClickListener
-////            }
-//            mCalendarView!!.showYearSelectLayout(mYear)
-////            mTextLunar!!.visibility = GONE
-//            mTextYear!!.visibility = GONE
-//            mTextMonthDay!!.text = mYear.toString()
-//        })
-//        mCalendarLayout = findViewById(R.id.calendarLayout)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    @SuppressLint("SetTextI18n")
+    fun initView() {
+        mTextMonthDay = findViewById(R.id.tv_month_day)
+        mTextYear = findViewById(R.id.tv_year)
+//        mTextLunar = findViewById(R.id.tv_lunar)
+        mRelativeTool = findViewById(R.id.rl_tool)
+        mCalendarView = findViewById(R.id.calendarView)
+        allTaskAtOneDayBtn = findViewById(R.id.all_task_at_one_day_btn)
+        createbutton=findViewById(R.id.createreport)
+        addNewTaskBtn = findViewById(R.id.add_new_task)
+
         mCalendarView!!.setOnYearChangeListener(this)
         mCalendarView!!.setOnCalendarSelectListener(this)
         mCalendarView!!.setOnMonthChangeListener(this)
@@ -103,10 +132,7 @@ class MainActivity : AppCompatActivity(), OnCalendarSelectListener,
         mCalendarView!!.setOnViewChangeListener(this)
         mTextYear!!.text = mCalendarView!!.curYear.toString()
         mYear = mCalendarView!!.curYear
-        mTextMonthDay!!.text =
-            mCalendarView!!.curMonth.toString() + "月" + mCalendarView!!.curDay + "日"
-//        mTextLunar!!.text = "今日"
-//        mTextCurrentDay!!.text = mCalendarView!!.curDay.toString()
+        mTextMonthDay!!.text = mCalendarView!!.curMonth.toString() + "月" + mCalendarView!!.curDay + "日"
 
     }
 
