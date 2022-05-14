@@ -379,13 +379,8 @@ class MainActivity : AppCompatActivity(), OnCalendarSelectListener, OnCalendarLo
     companion object {
         private fun getCalendarText(calendar: Calendar): String {
             return String.format(
-                "新历%s \n 农历%s \n 公历节日：%s \n 农历节日：%s \n 节气：%s \n 是否闰月：%s",
-                calendar.month.toString() + "月" + calendar.day + "日",
-                calendar.lunarCalendar.month.toString() + "月" + calendar.lunarCalendar.day + "日",
-                if (TextUtils.isEmpty(calendar.gregorianFestival)) "无" else calendar.gregorianFestival,
-                if (TextUtils.isEmpty(calendar.traditionFestival)) "无" else calendar.traditionFestival,
-                if (TextUtils.isEmpty(calendar.solarTerm)) "无" else calendar.solarTerm,
-                if (calendar.leapMonth == 0) "否" else String.format("闰%s月", calendar.leapMonth)
+                "农历%s",
+                calendar.lunarCalendar.month.toString() + "月" + calendar.lunarCalendar.day + "日"
             )
         }
     }
