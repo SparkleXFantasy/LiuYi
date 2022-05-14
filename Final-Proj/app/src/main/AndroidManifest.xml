@@ -46,6 +46,7 @@
             android:label="感悟心得">
         </activity>
         <activity android:name=".MainActivity"
+            android:theme="@style/AppStartPage"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LiuYi</string>
+    <string name="app_name">留忆</string>
     <string-array name="chinese_week_string_array">
         <item>日</item>
         <item>一</item>
