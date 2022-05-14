@@ -18,18 +18,12 @@
         android:paddingRight="6dp"
         android:paddingTop="12dp"
         tools:ignore="RelativeOverlap">
-        <TextView
-            android:id="@+id/app_title"
+        <ImageView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:paddingLeft="16dp"
-            android:textColor="#FF9800"
-            android:textSize="26sp"
-            android:text="留忆"
-            android:layout_weight="1"
-            android:textStyle="normal"
-            tools:ignore="RtlSymmetry" />
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:src="@drawable/liuyi_logo"
+            android:layout_weight="1"/>
         <RelativeLayout
             android:id="@+id/rl_tool"
             android:layout_width="match_parent"

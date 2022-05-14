@@ -268,12 +268,14 @@ class MainActivity : AppCompatActivity(), OnCalendarSelectListener, OnCalendarLo
     }
 
     override fun onCalendarLongClick(calendar: Calendar) {
+        val time_date=String.format("%04d-%02d-%02d",calendar.year,calendar.month,calendar.day)
         Toast.makeText(
-            this, """
-     长按不选择日期
-     ${getCalendarText(calendar)}
-     """.trimIndent(), Toast.LENGTH_SHORT
+            this, time_date, Toast.LENGTH_SHORT
         ).show()
+        val intent = Intent(this, AllTaskActivity::class.java)
+        intent.putExtra("time_date", time_date)            // flag = 0 表示新建 task
+        startActivity(intent)
+        Log.d("#########", "Longclick Start AllTaskEditActivity")
     }
 
     @SuppressLint("SetTextI18n")

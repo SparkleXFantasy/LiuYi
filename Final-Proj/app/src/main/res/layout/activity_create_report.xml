@@ -85,4 +85,11 @@
         android:layout_gravity="center_horizontal"
         android:paddingTop="10dp"
         android:id="@+id/report_ideamax" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:text="返回主页"
+        android:id="@+id/return_main"/>
 </LinearLayout>
