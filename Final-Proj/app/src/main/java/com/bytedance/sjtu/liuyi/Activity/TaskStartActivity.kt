@@ -102,10 +102,12 @@ class TaskStartActivity : AppCompatActivity() {
         // 初始化计时器
         task_clock.setCountDown(false)                                          // 设置为正计时
 
-        // 添加顶部返回按钮
-        task_show_toolbar = findViewById(R.id.task_show_toolbar)
-        setSupportActionBar(task_show_toolbar)
         // 设置左上角返回箭头
+        task_show_toolbar = findViewById(R.id.task_show_toolbar)
+        task_show_toolbar.setTitle("专注模式")
+        task_show_toolbar.setNavigationIcon(R.drawable.to_left)
+        setSupportActionBar(task_show_toolbar)
+        getSupportActionBar()?.setDisplayHomeAsUpEnabled(true)
         task_show_toolbar.setNavigationOnClickListener {
             Toast.makeText(this, "已返回", Toast.LENGTH_SHORT).show()
             finish()

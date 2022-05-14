@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
@@ -10,10 +10,16 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginVertical="20dp"
+        android:layout_marginVertical="10dp"
         card:cardCornerRadius="10dp"
         card:cardElevation="10dp"
         card:cardMaxElevation="10dp" >
+
+        <ImageView
+            android:id="@+id/task_card_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
@@ -26,6 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginVertical="5dp"
                 android:gravity="left"
                 android:text="date"/>
 
@@ -33,6 +40,7 @@
                 android:id="@+id/single_task_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
                 android:layout_gravity="left"
                 android:text="title"/>
 
@@ -41,6 +49,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
+                android:layout_marginVertical="5dp"
                 android:text="description"/>
 
             <TextView

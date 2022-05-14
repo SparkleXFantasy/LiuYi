@@ -28,7 +28,10 @@ class AllTaskActivity : AppCompatActivity(){
 
         // 添加顶部返回按钮
         all_task_toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.all_task_toolbar)
+        all_task_toolbar.setTitle("任务列表")
+        all_task_toolbar.setNavigationIcon(R.drawable.to_left)
         setSupportActionBar(all_task_toolbar)
+        getSupportActionBar()?.setDisplayHomeAsUpEnabled(true);
         // 设置左上角返回箭头
         all_task_toolbar.setNavigationOnClickListener {
             Toast.makeText(this, "已返回", Toast.LENGTH_SHORT).show()

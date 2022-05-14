@@ -32,7 +32,8 @@
             android:exported="false" />
         <activity
             android:name=".Activity.AllTaskActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.LiuYi.NoActionBar"/>
         <activity
             android:name=".CreateReport"
             android:exported="false" />

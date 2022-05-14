@@ -110,13 +110,6 @@
         app:month_view_auto_select_day="last_select_day_ignore_current"
         app:year_view_week_text_size="7sp" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:id="@+id/createreport"
-        android:text="点击生成月度报告"/>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -126,26 +119,55 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="0dp"
-                android:paddingLeft="10dp"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:textSize="18dp"
+                android:layout_weight="0.4"
+                android:gravity="center"
+                android:textSize="20dp"
+                android:layout_gravity="center"
                 android:layout_height="wrap_content"
-                android:text="待办事项"/>
+                android:textStyle="bold"
+                android:text="今日待办"/>
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/add_new_task"
-                android:text="添加"/>
+            <androidx.constraintlayout.utils.widget.ImageFilterButton
+                android:layout_width="33dp"
+                android:layout_height="33dp"
+                android:background="@drawable/idea_btn"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="7dp"
+                android:layout_marginHorizontal="5dp"
+                android:layout_gravity="center"
+                android:id="@+id/idea_btn" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/all_task_at_one_day_btn"
-                android:text="查看详情"/>
+            <androidx.constraintlayout.utils.widget.ImageFilterButton
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:background="@drawable/new_task_btn"
+                android:layout_marginVertical="5dp"
+                android:layout_marginHorizontal="8dp"
+                android:layout_gravity="center"
+                android:id="@+id/add_new_task" />
+
+            <androidx.constraintlayout.utils.widget.ImageFilterButton
+                android:background="@drawable/see_all_task_btn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginVertical="5dp"
+                android:layout_marginHorizontal="8dp"
+                android:layout_gravity="center"
+                android:id="@+id/all_task_at_one_day_btn" />
+
+            <androidx.constraintlayout.utils.widget.ImageFilterButton
+                android:layout_width="32dp"
+                android:layout_height="35dp"
+                android:background="@drawable/report_btn"
+                android:layout_gravity="center"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginVertical="5dp"
+                android:id="@+id/createreport"
+                android:text="点击生成月度报告"/>
 
         </LinearLayout>
 
@@ -153,36 +175,8 @@
             android:id="@+id/task_thumbnail_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+
     </LinearLayout>
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="0dp"
-                android:paddingLeft="10dp"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:textSize="18dp"
-                android:layout_height="wrap_content"
-                android:text="回忆感悟"/>
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/add_idea"
-                android:text="添加"/>
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/idea_button"
-                android:text="查看详情"/>
-        </LinearLayout>
-    </LinearLayout>
 
 </LinearLayout>

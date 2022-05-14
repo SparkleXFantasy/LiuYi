@@ -3,6 +3,7 @@ import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
+import android.media.Image
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
@@ -35,16 +36,16 @@ class MainActivity : AppCompatActivity(), OnCalendarSelectListener, OnCalendarLo
     private var calenderYear : String? = null
     private var calenderMonth : String? = null
     private var calenderDay : String? = null
-    private lateinit var allTaskAtOneDayBtn: Button
-    private lateinit var addNewTaskBtn : Button
+    private lateinit var allTaskAtOneDayBtn: ImageButton
+    private lateinit var addNewTaskBtn : ImageButton
     private lateinit var taskThumbnailAdapter: TaskThumbnailAdapter
     private var taskList = mutableListOf<TaskElement>()
     var isPause = false
     var ideabutton: Button?=null
 
-    var createIdeaItemButton: Button?=null
-    var viewIdeaItemListViewButton : Button? = null
-    var createbutton: Button?=null
+    var createIdeaItemButton: ImageButton?=null
+    var viewIdeaItemListViewButton : ImageButton? = null
+    var createbutton: ImageButton?=null
     private var mYear = 0
 //        var mCalendarLayout: CalendarLayout? = null
 
@@ -139,10 +140,10 @@ class MainActivity : AppCompatActivity(), OnCalendarSelectListener, OnCalendarLo
             })
         }
 
-        createIdeaItemButton!!.setOnClickListener {
-            intent = Intent(this, IdeaItemCreationActivity::class.java)
-            ideaItemRequestLauncher.launch(intent)
-        }
+//        createIdeaItemButton!!.setOnClickListener {
+//            intent = Intent(this, IdeaItemCreationActivity::class.java)
+//            ideaItemRequestLauncher.launch(intent)
+//        }
 
         viewIdeaItemListViewButton!!.setOnClickListener {
             if (calenderYear == null) {
@@ -174,8 +175,8 @@ class MainActivity : AppCompatActivity(), OnCalendarSelectListener, OnCalendarLo
         createbutton=findViewById(R.id.createreport)
         addNewTaskBtn = findViewById(R.id.add_new_task)
 
-        createIdeaItemButton = findViewById(R.id.add_idea)
-        viewIdeaItemListViewButton = findViewById(R.id.idea_button)
+//        createIdeaItemButton = findViewById(R.id.idea_btn)
+        viewIdeaItemListViewButton = findViewById(R.id.idea_btn)
         mCalendarView!!.setOnYearChangeListener(this)
         mCalendarView!!.setOnCalendarSelectListener(this)
         mCalendarView!!.setOnMonthChangeListener(this)

@@ -40,9 +40,8 @@ class TodoTaskEditActivity : AppCompatActivity() {
             old_task_tag = ""
         } else {
             toolbar_title = "编辑待办"
-            old_task_tag = intent.extras?.getString("task_date").toString()
+            old_task_tag = intent.extras?.getString("task_tag").toString()
         }
-
         // 如果是已经之前已经创建过的任务，当用户进入该任务编辑页面时，应该显示用户之前输入的内容
         task_exist = showContent(old_task_tag)
         task_edit_toolbar = findViewById(R.id.todo_task_edit_bar)
@@ -81,7 +80,7 @@ class TodoTaskEditActivity : AppCompatActivity() {
 
                 // 设置默认值
                 if (task_title == "") { task_title = "无主题" }
-                if (task_detail == "") { task_detail = "无详细描述" }
+                if (task_detail == "") { task_detail = "无内容" }
 
                 val newTask = ContentValues().apply {
                     put("task_title", task_title)
@@ -100,15 +99,6 @@ class TodoTaskEditActivity : AppCompatActivity() {
                 Log.d ("#######", newTask.toString())
                 Toast.makeText(this, "保存成功", Toast.LENGTH_SHORT).show()
                 finish()
-//            Log.d("DataBaseInsert", "————————————————")
-//            val intent_1 = Intent()
-//            intent_1.setAction("MAIN_FINISH")
-//            sendBroadcast(intent_1)                 // 结束 MainActivity
-//            finish()
-//            Log.d("TaskPageFinished", "#################3")
-//            val intent_2 = Intent(this, MainActivity::class.java)
-//            startActivity(intent_2)                 // 重新启动 MainActivity
-//            Log.d("MainStarted", "##################")
             }
         }
         return super.onOptionsItemSelected(item)
@@ -116,7 +106,8 @@ class TodoTaskEditActivity : AppCompatActivity() {
 
     private fun showContent(task_tag: String): Boolean {
         val myMap = dbHelper.queryTaskInfo(task_tag)
-        if (myMap["task_exist"] === "True") {
+        Log.d("########### pos_10", myMap.toString())
+        if (myMap["task_exist"] == "True") {
             task_title_edittext = findViewById<EditText>(R.id.task_title_edit)
             task_title_edittext.setText(myMap["task_title"])
 

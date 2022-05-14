@@ -43,24 +43,25 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:textSize="20sp"
+                    android:layout_marginVertical="5dp"
                     android:layout_marginHorizontal="10dp"
                     android:textStyle="bold"
                     android:text="title"/>
 
                 <TextView
                     android:id="@+id/task_entry_duration"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:layout_marginHorizontal="10dp"
-                    android:textSize="15sp"
+                    android:textSize="10sp"
                     android:text="duration"/>
             </LinearLayout>
 
             <CheckBox
                 android:id="@+id/task_status_checkbox"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_weight="0.1"
                 android:gravity="center"
                 android:layout_gravity="center"

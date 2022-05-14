@@ -4,7 +4,9 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bytedance.sjtu.liuyi.Activity.AllTaskActivity
 import com.bytedance.sjtu.liuyi.DataClass.TaskElement
@@ -24,8 +26,8 @@ class AllTaskAdapter (activity : AllTaskActivity) : RecyclerView.Adapter<AllTask
         var result : Int
         if (task_1.task_status == task_2.task_status) {
             val dateformatter : SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd-hh-mm-ss")
-            val date_1 : Date = dateformatter.parse(task_1.task_date)
-            val date_2 : Date = dateformatter.parse(task_2.task_date)
+            val date_1 : Date = dateformatter.parse(task_1.task_tag)
+            val date_2 : Date = dateformatter.parse(task_2.task_tag)
             if (date_1.before(date_2)) result = -1
             else result = 1
         } else {
@@ -49,6 +51,8 @@ class AllTaskAdapter (activity : AllTaskActivity) : RecyclerView.Adapter<AllTask
         val duration = taskList[position].task_duration.toString()
         holder.task_duration.text = "已专注" + convertSecondsToFormattedTime(duration.toLong())
         // todo：根据完成状态设置背景
+        if (taskList[position].task_status == "todo") holder.task_card_bg.setBackgroundResource(R.drawable.card_bg_bright)
+        else holder.task_card_bg.setBackgroundResource(R.drawable.card_bg_dark)
     }
 
     override fun getItemCount(): Int {
@@ -66,6 +70,7 @@ class AllTaskAdapter (activity : AllTaskActivity) : RecyclerView.Adapter<AllTask
         val task_detail : TextView = view.findViewById<TextView>(R.id.single_task_detail)
         val task_title : TextView = view.findViewById<TextView>(R.id.single_task_title)
         val task_duration : TextView = view.findViewById<TextView>(R.id.single_task_duration)
+        val task_card_bg : ImageView = view.findViewById<ImageView>(R.id.task_card_bg)
     }
 
     private fun convertSecondsToFormattedTime (seconds : Long?) : String {
