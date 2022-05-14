@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".IdeaActivity">
+    tools:context=".Activity.IdeaActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -50,6 +50,7 @@
         android:layout_marginEnd="@dimen/fab_margin"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end"
-        app:srcCompat="@drawable/ic_ideapage_plus" />
+        app:srcCompat="@drawable/ic_ideapage_plus"
+        android:layout_marginRight="@dimen/fab_margin" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
