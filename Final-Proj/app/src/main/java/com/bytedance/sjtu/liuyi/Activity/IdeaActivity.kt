@@ -1,4 +1,4 @@
-package com.bytedance.sjtu.liuyi
+package com.bytedance.sjtu.liuyi.Activity
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -11,6 +11,10 @@ import android.view.MenuItem
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bytedance.sjtu.liuyi.Adapter.IdeaViewAdapter
+import com.bytedance.sjtu.liuyi.DataClass.IdeaItem
+import com.bytedance.sjtu.liuyi.IdeaItemDBHelper
+import com.bytedance.sjtu.liuyi.R
 import com.bytedance.sjtu.liuyi.databinding.ActivityScrollingBinding
 
 class IdeaActivity : AppCompatActivity() {
@@ -50,7 +54,7 @@ class IdeaActivity : AppCompatActivity() {
         setDatabaseTestItem(false)    // if set true, default items will be inserted into database for testing.
         bindDatabase()
         initRecyclerView()
-        clearDatabaseItem()
+//        clearDatabaseItem()
     }
 
     private fun getParameterBundle(): Bundle? {
@@ -76,11 +80,11 @@ class IdeaActivity : AppCompatActivity() {
     }
 
     private fun inflateTestDateBundle() {
-        if (bundleTestItem) {
-            intent.putExtra("year", "2022")
-            intent.putExtra("month", "05")
-            intent.putExtra("day", "14")
-        }
+//        if (bundleTestItem) {
+//            intent.putExtra("year", "2022")
+//            intent.putExtra("month", "05")
+//            intent.putExtra("day", "14")
+//        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -116,13 +120,11 @@ class IdeaActivity : AppCompatActivity() {
     }
 
     private fun initTestIdeaItem() {
-        val ideaItemList = mutableListOf(
-            IdeaItem("2022-05-14", "Keep simple, keep stupid.", "", "", "2022-05-10-22-43-24"),
-            IdeaItem("2022-02-23", "Have a heart of spring, ecstatic to in full bloom.", "", "", "2022-02-23-15-42-52"),
-            )
-        for (ideaItem in ideaItemList) {
-            dbHelper.insertIdeaItem(db, ideaItem)
-        }
+//        val testIdeaItem = IdeaItem(dateStr, "Keep simple, keep stupid.", "", "", "$dateStr-22-43-24")
+//        val ideaList = dbHelper.getIdeaItemListByDate(dateStr)
+//        if (ideaList.isEmpty()) {
+//            dbHelper.insertIdeaItem(db, testIdeaItem)
+//        }
     }
 
     private fun clearDatabaseItem() {
@@ -134,12 +136,10 @@ class IdeaActivity : AppCompatActivity() {
         val layoutManager = LinearLayoutManager(this)
         rv.layoutManager = layoutManager
         val adapter = IdeaViewAdapter()
+        Log.d("IdeaActivity", "Query Date: $dateStr")
         adapter.setIdeaList(dbHelper.getIdeaItemListByDate(dateStr))
         rvAdapter = adapter
         rv.adapter = adapter
         rvIdea = rv
     }
-
-
-
 }

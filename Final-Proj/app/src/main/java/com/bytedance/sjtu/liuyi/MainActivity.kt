@@ -9,8 +9,8 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.bytedance.sjtu.liuyi.Activity.AllTaskActivity
 import com.haibin.calendarview.Calendar
 import com.haibin.calendarview.CalendarView
 import com.haibin.calendarview.CalendarView.*
@@ -18,8 +18,7 @@ import com.haibin.calendarview.TrunkBranchAnnals
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bytedance.sjtu.liuyi.Activity.TODOLIST_DB_NAME
-import com.bytedance.sjtu.liuyi.Activity.TodoTaskEditActivity
+import com.bytedance.sjtu.liuyi.Activity.*
 import com.bytedance.sjtu.liuyi.Adapter.TaskThumbnailAdapter
 import com.bytedance.sjtu.liuyi.DataClass.TaskElement
 import java.time.LocalDateTime
@@ -33,18 +32,35 @@ class MainActivity : AppCompatActivity(), OnCalendarSelectListener, OnCalendarLo
     var mCalendarView: CalendarView? = null
     var mRelativeTool: RelativeLayout? = null
 
+    private var calenderYear : String? = null
+    private var calenderMonth : String? = null
+    private var calenderDay : String? = null
     private lateinit var allTaskAtOneDayBtn: Button
     private lateinit var addNewTaskBtn : Button
     private lateinit var taskThumbnailAdapter: TaskThumbnailAdapter
     private var taskList = mutableListOf<TaskElement>()
     var isPause = false
     var ideabutton: Button?=null
+
+    var createIdeaItemButton: Button?=null
+    var viewIdeaItemListViewButton : Button? = null
     var createbutton: Button?=null
     private var mYear = 0
 //        var mCalendarLayout: CalendarLayout? = null
 
     private lateinit var todolist_db : SQLiteDatabase
     private val todolist_dbHelper : TodoListDBHelper = TodoListDBHelper(this, TODOLIST_DB_NAME)
+
+    private val ideaItemRequestLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        when (it.resultCode) {
+            IdeaItemCreationActivity.IdeaItemCreationSuccessCode -> {
+                Log.d("MainActivity", "Create Idea Item Success")
+            }
+            IdeaItemCreationActivity.IdeaItemCreationFailCode -> {
+                Log.d("MainActivity", "Create Idea Item Fail")
+            }
+        }
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -122,6 +138,29 @@ class MainActivity : AppCompatActivity(), OnCalendarSelectListener, OnCalendarLo
                 putExtra("day",mCalendarView!!.curDay)
             })
         }
+
+        createIdeaItemButton!!.setOnClickListener {
+            intent = Intent(this, IdeaItemCreationActivity::class.java)
+            ideaItemRequestLauncher.launch(intent)
+        }
+
+        viewIdeaItemListViewButton!!.setOnClickListener {
+            if (calenderYear == null) {
+                calenderYear = mCalendarView!!.curYear.toString()
+            }
+            if (calenderMonth == null) {
+                calenderMonth = mCalendarView!!.curMonth.toString()
+            }
+            if (calenderDay == null) {
+                calenderDay = mCalendarView!!.curDay.toString()
+            }
+            startActivity(Intent().apply {
+                setClass(this@MainActivity, IdeaActivity::class.java)
+                putExtra("year",calenderYear)
+                putExtra("month",calenderMonth)
+                putExtra("day",calenderDay)
+            })
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -135,6 +174,8 @@ class MainActivity : AppCompatActivity(), OnCalendarSelectListener, OnCalendarLo
         createbutton=findViewById(R.id.createreport)
         addNewTaskBtn = findViewById(R.id.add_new_task)
 
+        createIdeaItemButton = findViewById(R.id.add_idea)
+        viewIdeaItemListViewButton = findViewById(R.id.idea_button)
         mCalendarView!!.setOnYearChangeListener(this)
         mCalendarView!!.setOnCalendarSelectListener(this)
         mCalendarView!!.setOnMonthChangeListener(this)
@@ -191,6 +232,9 @@ class MainActivity : AppCompatActivity(), OnCalendarSelectListener, OnCalendarLo
     override fun onCalendarSelect(calendar: Calendar, isClick: Boolean) {
         //Log.e("onDateSelected", "  -- " + calendar.getYear() + "  --  " + calendar.getMonth() + "  -- " + calendar.getDay());
 //        mTextLunar!!.visibility = VISIBLE
+        calenderYear = calendar.year.toString()
+        calenderMonth = calendar.month.toString()
+        calenderDay = calendar.day.toString()
         mTextYear!!.visibility = VISIBLE
         mTextMonthDay!!.text = calendar.month.toString() + "月" + calendar.day + "日"
         mTextYear!!.text = calendar.year.toString()
@@ -276,6 +320,39 @@ class MainActivity : AppCompatActivity(), OnCalendarSelectListener, OnCalendarLo
     override fun onYearChange(year: Int) {
         mTextMonthDay!!.text = year.toString()
         Log.e("onYearChange", " 年份变化 $year")
+    }
+
+    private fun getIdeaItemCountForDate(date : String) : Int {
+        val dbHelper = IdeaItemDBHelper(this, "idea.db", 1)
+        val ideaItemList = dbHelper.getIdeaItemListByDate(date)
+        return ideaItemList.size
+    }
+
+    private fun calenderViewDate2IdeaItemDatabaseQueryDate() : String {
+        if (calenderYear == null) {
+            calenderYear = mCalendarView!!.curYear.toString()
+        }
+        if (calenderMonth == null) {
+            calenderMonth = mCalendarView!!.curMonth.toString()
+        }
+        if (calenderDay == null) {
+            calenderDay = mCalendarView!!.curDay.toString()
+        }
+        val year = calenderYear
+        val month = calenderMonth!!.toInt()
+        val day = calenderDay!!.toInt()
+        var dateQueryStr = "$year-"
+        dateQueryStr += if (month < 10) {
+            "0$month-"
+        } else {
+            "$month-"
+        }
+        dateQueryStr += if (day < 10) {
+            "0$day"
+        } else {
+            "$day"
+        }
+        return dateQueryStr
     }
 
     companion object {
