@@ -42,7 +42,8 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:gravity="end"
-            android:layout_gravity="end">
+            android:layout_gravity="end"
+            >
             <Button
                 android:id="@+id/btn_creation"
                 android:layout_width="100dp"
@@ -69,5 +70,20 @@
         android:inputType="textMultiLine"
         android:maxLines="20">
     </EditText>
+
+    <ImageView
+        android:id="@+id/iv_idea_item_creation"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:scaleType="centerInside"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:src="@drawable/ic_creation_plus"
+        android:alpha="0.4"
+        android:background="#BBBBBB"
+        >
+    </ImageView>
 
 </LinearLayout>

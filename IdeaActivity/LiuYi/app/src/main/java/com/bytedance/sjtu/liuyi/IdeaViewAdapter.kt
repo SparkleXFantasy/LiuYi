@@ -1,11 +1,19 @@
 package com.bytedance.sjtu.liuyi
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
+import android.provider.DocumentsContract
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.recyclerview.widget.RecyclerView
 
 class IdeaViewAdapter: RecyclerView.Adapter<IdeaViewAdapter.IdeaViewHolder>() {
@@ -16,9 +24,41 @@ class IdeaViewAdapter: RecyclerView.Adapter<IdeaViewAdapter.IdeaViewHolder>() {
         private val ideaItemTimeView : TextView = itemView.findViewById(R.id.tv_idea_item_time)
 
         fun bindView(ideaItem : IdeaItem) {
-            ideaItemTextView.text = ideaItem.text
+            if (ideaItem.text.isBlank()) {
+                ideaItemTextView.visibility = View.GONE
+            }
+            else {
+                ideaItemTextView.text = ideaItem.text
+                ideaItemTextView.visibility = View.VISIBLE
+            }
             ideaItemTimeView.text = tag2Time(ideaItem.tag)
-            ideaItemImageView.setImageResource(R.drawable.banana)
+            if (ideaItem.img.isBlank()) {
+                ideaItemImageView.visibility = View.GONE
+            }
+            else {
+                ideaItemImageView.setImageURI(Uri.parse(ideaItem.img))
+                ideaItemImageView.visibility = View.VISIBLE
+            }
+        }
+
+        private fun calculateInSampleSize(
+            options: BitmapFactory.Options,
+            reqWidth: Int,
+            reqHeight: Int
+        ): Int {
+            /**
+             * todo calculate sampleSize
+             */
+            return 2
+        }
+
+        private fun decodeBitmapFromFile(path: String, reqWidth: Int, reqHeight: Int): Bitmap {
+            val options = BitmapFactory.Options()
+            options.inJustDecodeBounds = true
+            BitmapFactory.decodeFile(path, options)
+            options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight)
+            options.inJustDecodeBounds = false
+            return BitmapFactory.decodeFile(path, options)
         }
 
         private fun tag2Time(tag : String) : String {

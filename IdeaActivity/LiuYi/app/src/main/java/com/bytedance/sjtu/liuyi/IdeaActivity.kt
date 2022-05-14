@@ -1,13 +1,17 @@
 package com.bytedance.sjtu.liuyi
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bytedance.sjtu.liuyi.databinding.ActivityScrollingBinding
@@ -22,15 +26,11 @@ class IdeaActivity : AppCompatActivity() {
     private var databaseTestItem : Boolean = false
     private val ideaItemRequestLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         when (it.resultCode) {
-            IdeaItemCreationSuccessCode -> {
+            IdeaItemCreationActivity.IdeaItemCreationSuccessCode -> {
                 rvAdapter.setIdeaList(getIdeaItemList())
             }
-            IdeaItemCreationFailCode -> {}
+            IdeaItemCreationActivity.IdeaItemCreationFailCode -> {}
         }
-    }
-    companion object {
-        const val IdeaItemCreationSuccessCode : Int = 1001
-        const val IdeaItemCreationFailCode : Int = 1002
     }
 
     @SuppressLint("NewApi")
@@ -46,7 +46,7 @@ class IdeaActivity : AppCompatActivity() {
             intent = Intent(this, IdeaItemCreationActivity::class.java)
             ideaItemRequestLauncher.launch(intent)
         }
-        setDatabaseTestItem(true)    // if set true, four items will be inserted into database for testing.
+        setDatabaseTestItem(false)    // if set true, four items will be inserted into database for testing.
         bindDatabase()
         initRecyclerView()
         clearDatabaseItem()
@@ -81,12 +81,10 @@ class IdeaActivity : AppCompatActivity() {
     }
 
     private fun initTestIdeaItem() {
-        val ideaItemList = mutableListOf<IdeaItem>(
-            IdeaItem("2022-1-12", "addition and subtraction: knowledge to increase life, trouble will decline; Friendship will increase, resentment to decrease; A heart to heart to decrease, increasing; Increasing confidence to promise to decrease,; ） to increase quantity to jealousy, diminishing. Steps to increase to decrease, alcohol and tobacco.", ".", ".", "2022-1-12-22-43-24"),
-            IdeaItem("2022-1-13", "have a heart of spring, ecstatic to in full bloom; Again the sea, the mind can open; Good, play to have womb agile; The eyes have god, the look line to sharp; Arm strength, make moves to the punch; With rhythm, steps are to light.", ".", ".", "2022-1-13-5-12-52"),
-            IdeaItem("2022-1-15", "life is a song, sing the life rhythm and melody; Life is a road, extend the footprint of the life and hope; Life is a cup of wine, full of life and mellow sorrow; Life is a mass of linen, interweaving the trouble with life and happy; Life is a picture, and describes the life experience of red, green, blue; Life is a fire, burning vision of life and to dream.", ".", ".", "2022-1-15-2-43-24"),
-            IdeaItem("2022-2-13", "The sky is full of black clouds. Flashes of lightning lit up the courts, old houses, and ramshackle porches, and thunder begins to roar overhead. No birds sing any longer, but the leaves of the trees rustle and a wind blows against our faces. A drop of water falls, then another, and then the rain falls on the leaves of the trees and the iron roofs with a noise reminding us of the beating of drums. A brilliant stripe o flight fills the sky. Suddenly there comes a terrible thunderclap overhead, and then the sky is full of roars of thunder.", ".", ".", "2022-2-13-17-12-52")
-        )
+        val ideaItemList = mutableListOf(
+            IdeaItem("2022-5-10", "Keep simple, keep stupid.", "", "", "2022-5-10-22-43-24"),
+            IdeaItem("2022-5-12", "Have a heart of spring, ecstatic to in full bloom.", "", "", "2022-5-12-15-42-52"),
+            )
         for (ideaItem in ideaItemList) {
             dbHelper.insertIdeaItem(db, ideaItem)
         }
@@ -125,4 +123,5 @@ class IdeaActivity : AppCompatActivity() {
         cursor.close()
         return ideaItemList
     }
+
 }
