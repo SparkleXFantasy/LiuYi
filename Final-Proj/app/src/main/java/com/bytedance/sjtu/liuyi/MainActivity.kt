@@ -121,10 +121,22 @@ class MainActivity : AppCompatActivity(), OnCalendarSelectListener, OnCalendarLo
 
         // 查看详情按钮
         allTaskAtOneDayBtn.setOnClickListener{
+            if (calenderYear == null) {
+                calenderYear = mCalendarView!!.curYear.toString()
+            }
+            if (calenderMonth == null) {
+                calenderMonth = mCalendarView!!.curMonth.toString()
+            }
+            if (calenderDay == null) {
+                calenderDay = mCalendarView!!.curDay.toString()
+            }
             val dateFormatterForDate = DateTimeFormatter.ofPattern("yyyy-MM-dd")
             val new_task_tag = dateFormatterForDate.format(LocalDateTime.now())
             val intent = Intent(this, AllTaskActivity::class.java)
             intent.putExtra("task_date",new_task_tag)
+            intent.putExtra("year",calenderYear)
+            intent.putExtra("month",calenderMonth)
+            intent.putExtra("day",calenderDay)
             startActivity(intent)
         }
 
@@ -262,14 +274,26 @@ class MainActivity : AppCompatActivity(), OnCalendarSelectListener, OnCalendarLo
     }
 
     override fun onCalendarLongClick(calendar: Calendar) {
-        val time_date=String.format("%04d-%02d-%02d",calendar.year,calendar.month,calendar.day)
+        if (calenderYear == null) {
+            calenderYear = mCalendarView!!.curYear.toString()
+        }
+        if (calenderMonth == null) {
+            calenderMonth = mCalendarView!!.curMonth.toString()
+        }
+        if (calenderDay == null) {
+            calenderDay = mCalendarView!!.curDay.toString()
+        }
+
+        val task_date=String.format("%04d-%02d-%02d",calendar.year,calendar.month,calendar.day)
         Toast.makeText(
-            this, time_date, Toast.LENGTH_SHORT
+            this, task_date, Toast.LENGTH_SHORT
         ).show()
         val intent = Intent(this, AllTaskActivity::class.java)
-        intent.putExtra("time_date", time_date)            // flag = 0 表示新建 task
+        intent.putExtra("task_date", task_date)            // flag = 0 表示新建 task
+        intent.putExtra("year", calenderYear)
+        intent.putExtra("month",calenderMonth)
+        intent.putExtra("day",calenderDay)
         startActivity(intent)
-        Log.d("#########", "Longclick Start AllTaskEditActivity")
     }
 
     @SuppressLint("SetTextI18n")

@@ -1,5 +1,6 @@
 package com.bytedance.sjtu.liuyi.Activity
 
+import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.util.Log
@@ -11,20 +12,24 @@ import com.bytedance.sjtu.liuyi.Adapter.AllTaskAdapter
 import com.bytedance.sjtu.liuyi.TodoListDBHelper
 import com.bytedance.sjtu.liuyi.DataClass.TaskElement
 import com.bytedance.sjtu.liuyi.R
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class AllTaskActivity : AppCompatActivity(){
+class AllTaskActivity : AppCompatActivity() {
     private lateinit var db : SQLiteDatabase
     private lateinit var singleTaskAdapter : AllTaskAdapter
     private var taskList = mutableListOf<TaskElement>()
     private lateinit var all_task_toolbar : androidx.appcompat.widget.Toolbar
     private val dbHelper : TodoListDBHelper = TodoListDBHelper(this, TODOLIST_DB_NAME)
+    private lateinit var fab_idea : FloatingActionButton    // 点击跳转到当日的 idea 页
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         this.setContentView(R.layout.activity_all_task)
         val date = intent.extras?.getString("task_date").toString()
+        val year = intent.extras?.getString("year").toString()
+        val month = intent.extras?.getString("year").toString()
+        val day = intent.extras?.getString("year").toString()
         db = dbHelper.openDB()
-        Log.d("##########", "Entered Successful")
 
         // 添加顶部返回按钮
         all_task_toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.all_task_toolbar)
@@ -36,6 +41,16 @@ class AllTaskActivity : AppCompatActivity(){
         all_task_toolbar.setNavigationOnClickListener {
             Toast.makeText(this, "已返回", Toast.LENGTH_SHORT).show()
             finish()
+        }
+
+        // 点击跳转到当日 idea 页
+        fab_idea = findViewById<FloatingActionButton>(R.id.fab_idea)
+        fab_idea.setOnClickListener {
+            var intent = Intent(this, IdeaActivity::class.java)
+            intent.putExtra("year", year)
+            intent.putExtra("month", month)
+            intent.putExtra("day", day)
+            startActivity(intent)
         }
 
         val allTaskRecyclerView = findViewById<RecyclerView>(R.id.all_task_recyclerview)

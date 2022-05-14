@@ -117,7 +117,6 @@ class TaskStartActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     private fun showContent(Tag : String) : Boolean {
         val myMap = dbHelper.queryTaskInfo(Tag)
-        Log.d("######", myMap["task_exist"].toString())
         if (myMap["task_exist"] == "True") {
             task_tag = myMap["task_tag"]!!
             task_title_textview.setText(myMap["task_title"])

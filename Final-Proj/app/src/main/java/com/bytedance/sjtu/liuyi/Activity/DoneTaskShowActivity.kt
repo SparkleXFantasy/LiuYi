@@ -1,5 +1,6 @@
 package com.bytedance.sjtu.liuyi.Activity
 
+import android.annotation.SuppressLint
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -17,13 +18,13 @@ class DoneTaskShowActivity : AppCompatActivity() {
     private lateinit var done_task_show_detail: TextView
     private lateinit var done_task_show_duration: TextView
     private lateinit var done_task_show_toolbar : androidx.appcompat.widget.Toolbar
-    private val dbHelper = TodoListDBHelper(this, "ToDoList_v9.db")
+    private val dbHelper = TodoListDBHelper(this, TODOLIST_DB_NAME)
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_todo_task_edit)
-        val task_tag = intent.extras?.getString("task_date").toString()
+        setContentView(R.layout.activity_done_task_show)
+        val task_tag = intent.extras?.getString("task_tag").toString()
 
         if (!showContent(task_tag)) {
             finish()
@@ -31,8 +32,10 @@ class DoneTaskShowActivity : AppCompatActivity() {
         }
 
         done_task_show_toolbar = findViewById(R.id.done_task_show_toolbar)
-        // 添加保存按钮
+        done_task_show_toolbar.setTitle("任务完成情况")
+        done_task_show_toolbar.setNavigationIcon(R.drawable.to_left)
         setSupportActionBar(done_task_show_toolbar)
+        getSupportActionBar()?.setDisplayHomeAsUpEnabled(true)
         // 设置左上角返回箭头
         done_task_show_toolbar.setNavigationOnClickListener {
             Toast.makeText(this, "已返回", Toast.LENGTH_SHORT).show()
@@ -40,18 +43,19 @@ class DoneTaskShowActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun showContent(task_tag: String): Boolean {
         val myMap = dbHelper.queryTaskInfo(task_tag)
-        if (myMap["task_exist"] === "True") {
+        if (myMap["task_exist"] == "True") {
             done_task_show_title = findViewById<TextView>(R.id.done_task_show_title)
             done_task_show_title.setText(myMap["task_title"])
 
-            done_task_show_detail = findViewById<TextView>(R.id.task_detail_edit)
+            done_task_show_detail = findViewById<TextView>(R.id.done_task_show_detail)
             done_task_show_detail.setText(myMap["task_detail"])
 
             done_task_show_duration = findViewById<TextView>(R.id.done_task_show_duration)
             val duration = myMap["task_duration"]?.toLong()
-            done_task_show_duration.setText(convertSecondsToFormattedTime((duration)))
+            done_task_show_duration.setText("该任务总计专注时间 :" + convertSecondsToFormattedTime((duration)))
             return true
         } else return false
     }
