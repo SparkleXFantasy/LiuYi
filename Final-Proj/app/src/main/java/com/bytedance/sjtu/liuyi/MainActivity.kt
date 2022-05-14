@@ -305,6 +305,39 @@ class MainActivity : AppCompatActivity(), OnCalendarSelectListener, OnCalendarLo
         Log.e("onYearChange", " 年份变化 $year")
     }
 
+    private fun getIdeaItemCountForDate(date : String) : Int {
+        val dbHelper = IdeaItemDBHelper(this, "idea.db", 1)
+        val ideaItemList = dbHelper.getIdeaItemListByDate(date)
+        return ideaItemList.size
+    }
+
+    private fun calenderViewDate2IdeaItemDatabaseQueryDate() : String {
+        if (calenderYear == null) {
+            calenderYear = mCalendarView!!.curYear.toString()
+        }
+        if (calenderMonth == null) {
+            calenderMonth = mCalendarView!!.curMonth.toString()
+        }
+        if (calenderDay == null) {
+            calenderDay = mCalendarView!!.curDay.toString()
+        }
+        val year = calenderYear
+        val month = calenderMonth!!.toInt()
+        val day = calenderDay!!.toInt()
+        var dateQueryStr = "$year-"
+        dateQueryStr += if (month < 10) {
+            "0$month-"
+        } else {
+            "$month-"
+        }
+        dateQueryStr += if (day < 10) {
+            "0$day"
+        } else {
+            "$day"
+        }
+        return dateQueryStr
+    }
+
     companion object {
         private fun getCalendarText(calendar: Calendar): String {
             return String.format(
