@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?><!--suppress ALL -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="com.bytedance.sjtu.liuyi.MainActivity"
+    tools:ignore="RtlHardcoded,HardcodedText,RtlSymmetry,SmallSp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:layout_gravity="center_horizontal"
+        android:paddingTop="10dp"
+        android:text="叮~"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:layout_gravity="center_horizontal"
+        android:paddingTop="10dp"
+        android:id="@+id/report_title" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:layout_gravity="center_horizontal"
+        android:paddingTop="10dp"
+        android:id="@+id/report_usesum" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:layout_gravity="center_horizontal"
+        android:paddingTop="10dp"
+        android:gravity="center"
+        android:id="@+id/report_todosum" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:layout_gravity="center_horizontal"
+        android:paddingTop="10dp"
+        android:gravity="center"
+        android:id="@+id/report_todomax" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:layout_gravity="center_horizontal"
+        android:paddingTop="10dp"
+        android:gravity="center"
+        android:id="@+id/report_todocmax" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:layout_gravity="center_horizontal"
+        android:paddingTop="10dp"
+        android:gravity="center"
+        android:id="@+id/report_todofmax" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:layout_gravity="center_horizontal"
+        android:paddingTop="10dp"
+        android:id="@+id/report_ideasum" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:layout_gravity="center_horizontal"
+        android:paddingTop="10dp"
+        android:id="@+id/report_ideamax" />
+</LinearLayout>
