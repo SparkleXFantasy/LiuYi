@@ -42,8 +42,7 @@
         <activity
             android:name=".Activity.IdeaActivity"
             android:exported="true"
-            android:label="LiuYi"
-            android:theme="@style/Theme.LiuYi.NoActionBar">
+            android:label="感悟心得">
         </activity>
         <activity android:name=".MainActivity"
             android:exported="true">

@@ -9,8 +9,8 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.bytedance.sjtu.liuyi.Activity.AllTaskActivity
 import com.haibin.calendarview.Calendar
 import com.haibin.calendarview.CalendarView
 import com.haibin.calendarview.CalendarView.*
@@ -18,8 +18,7 @@ import com.haibin.calendarview.TrunkBranchAnnals
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bytedance.sjtu.liuyi.Activity.TODOLIST_DB_NAME
-import com.bytedance.sjtu.liuyi.Activity.TodoTaskEditActivity
+import com.bytedance.sjtu.liuyi.Activity.*
 import com.bytedance.sjtu.liuyi.Adapter.TaskThumbnailAdapter
 import com.bytedance.sjtu.liuyi.DataClass.TaskElement
 import java.time.LocalDateTime
@@ -38,13 +37,25 @@ class MainActivity : AppCompatActivity(), OnCalendarSelectListener, OnCalendarLo
     private lateinit var taskThumbnailAdapter: TaskThumbnailAdapter
     private var taskList = mutableListOf<TaskElement>()
 
-    var ideabutton: Button?=null
+    var createIdeaItemButton: Button?=null
+    var viewIdeaItemListViewButton : Button? = null
     var createbutton: Button?=null
     private var mYear = 0
 //        var mCalendarLayout: CalendarLayout? = null
 
     private lateinit var todolist_db : SQLiteDatabase
     private val todolist_dbHelper : TodoListDBHelper = TodoListDBHelper(this, TODOLIST_DB_NAME)
+
+    private val ideaItemRequestLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        when (it.resultCode) {
+            IdeaItemCreationActivity.IdeaItemCreationSuccessCode -> {
+                Log.d("MainActivity", "Create Idea Item Success")
+            }
+            IdeaItemCreationActivity.IdeaItemCreationFailCode -> {
+                Log.d("MainActivity", "Create Idea Item Fail")
+            }
+        }
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -106,6 +117,20 @@ class MainActivity : AppCompatActivity(), OnCalendarSelectListener, OnCalendarLo
                 putExtra("day",mCalendarView!!.curDay)
             })
         }
+
+        createIdeaItemButton!!.setOnClickListener {
+            intent = Intent(this, IdeaItemCreationActivity::class.java)
+            ideaItemRequestLauncher.launch(intent)
+        }
+
+        viewIdeaItemListViewButton!!.setOnClickListener {
+            startActivity(Intent().apply {
+                setClass(this@MainActivity, IdeaActivity::class.java)
+                putExtra("year",mCalendarView!!.curYear)
+                putExtra("month",mCalendarView!!.curMonth)
+                putExtra("day",mCalendarView!!.curDay)
+            })
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -120,6 +145,8 @@ class MainActivity : AppCompatActivity(), OnCalendarSelectListener, OnCalendarLo
         createbutton=findViewById(R.id.createreport)
         addNewTaskBtn = findViewById(R.id.add_new_task)
 
+        createIdeaItemButton = findViewById(R.id.add_idea)
+        viewIdeaItemListViewButton = findViewById(R.id.idea_button)
         mCalendarView!!.setOnYearChangeListener(this)
         mCalendarView!!.setOnCalendarSelectListener(this)
         mCalendarView!!.setOnMonthChangeListener(this)

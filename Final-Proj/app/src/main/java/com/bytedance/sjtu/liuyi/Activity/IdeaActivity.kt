@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
@@ -38,7 +39,7 @@ class IdeaActivity : AppCompatActivity() {
     @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setBundleTestItem(true)    // if set true, default date bundle will be set for the database filter.
+        setBundleTestItem(false)    // if set true, default date bundle will be set for the database filter.
         inflateTestDateBundle()
         setEnvironmentParameter()
         binding = ActivityScrollingBinding.inflate(layoutInflater)
@@ -62,7 +63,20 @@ class IdeaActivity : AppCompatActivity() {
 
     private fun setEnvironmentParameter() {
         val bundle = getParameterBundle()
-        dateStr = "${bundle!!.get("year")}-${bundle.get("month")}-${bundle.get("day")}"
+        val year = bundle!!.get("year")
+        val month = bundle.get("month").toString().toInt()
+        val day = bundle.get("day").toString().toInt()
+        dateStr = "$year-"
+        dateStr += if (month < 10) {
+            "0$month-"
+        } else {
+            "$month-"
+        }
+        dateStr += if (day < 10) {
+            "0$day"
+        } else {
+            "$day"
+        }
     }
 
     private fun inflateTestDateBundle() {
@@ -124,12 +138,10 @@ class IdeaActivity : AppCompatActivity() {
         val layoutManager = LinearLayoutManager(this)
         rv.layoutManager = layoutManager
         val adapter = IdeaViewAdapter()
+        Log.d("IdeaActivity", "Query Date: $dateStr")
         adapter.setIdeaList(dbHelper.getIdeaItemListByDate(dateStr))
         rvAdapter = adapter
         rv.adapter = adapter
         rvIdea = rv
     }
-
-
-
 }

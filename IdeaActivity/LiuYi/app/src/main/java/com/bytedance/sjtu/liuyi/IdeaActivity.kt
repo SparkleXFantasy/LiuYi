@@ -59,7 +59,20 @@ class IdeaActivity : AppCompatActivity() {
 
     private fun setEnvironmentParameter() {
         val bundle = getParameterBundle()
-        dateStr = "${bundle!!.get("year")}-${bundle.get("month")}-${bundle.get("day")}"
+        val year = bundle!!.get("year")
+        val month = bundle.get("month").toString().toInt()
+        val day = bundle.get("day").toString().toInt()
+        dateStr = "$year-"
+        dateStr += if (month < 10) {
+            "0$month-"
+        } else {
+            "$month-"
+        }
+        dateStr += if (day < 10) {
+            "0$day"
+        } else {
+            "$day"
+        }
     }
 
     private fun inflateTestDateBundle() {

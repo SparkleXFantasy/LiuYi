@@ -87,7 +87,7 @@ class IdeaItemCreationActivity : AppCompatActivity() {
 
     private fun createIdeaItem() : Boolean {
         val ideaItem = packIdeaItemData()
-//        Log.d("IdeaItemCreationActivity", "dataItem : $ideaItem")
+        Log.d("IdeaItemCreationActivity", "dataItem : $ideaItem")
         if (checkValidIdeaItem(ideaItem)) {
             dbHelper.insertIdeaItem(db, ideaItem)
             return true
