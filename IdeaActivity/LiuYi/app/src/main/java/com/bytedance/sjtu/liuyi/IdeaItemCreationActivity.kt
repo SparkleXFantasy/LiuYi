@@ -82,6 +82,7 @@ class IdeaItemCreationActivity : AppCompatActivity() {
 
     private fun createIdeaItem() : Boolean {
         val ideaItem = packIdeaItemData()
+        Log.d("IdeaItemCreationActivity", "dataItem : $ideaItem")
         if (checkValidIdeaItem(ideaItem)) {
             dbHelper.insertIdeaItem(db, ideaItem)
             return true
@@ -154,7 +155,7 @@ class IdeaItemCreationActivity : AppCompatActivity() {
     private fun packIdeaItemData() : IdeaItem {
         val tv = findViewById<TextView>(R.id.et_idea_item_creation)
         val text = tv.text.toString()
-        val tagFormatter = SimpleDateFormat("yyyy-mm-dd-hh-mm-ss")
+        val tagFormatter = SimpleDateFormat("yyyy-MM-dd-HH-mm-ss")
         val formattedTag = tagFormatter.format(Date())
         val formattedDate = formattedTag.substring(0, 10)
         var imgURI = ""

@@ -1,17 +1,14 @@
 package com.bytedance.sjtu.liuyi
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bytedance.sjtu.liuyi.databinding.ActivityScrollingBinding
@@ -21,13 +18,15 @@ class IdeaActivity : AppCompatActivity() {
     private lateinit var binding: ActivityScrollingBinding
     private lateinit var rvAdapter : IdeaViewAdapter
     private lateinit var rvIdea: RecyclerView
+    private lateinit var dateStr : String
     private val dbHelper = IdeaItemDBHelper(this, "idea.db", 1)
     private var db : SQLiteDatabase? = null
     private var databaseTestItem : Boolean = false
+    private var bundleTestItem : Boolean = false
     private val ideaItemRequestLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         when (it.resultCode) {
             IdeaItemCreationActivity.IdeaItemCreationSuccessCode -> {
-                rvAdapter.setIdeaList(getIdeaItemList())
+                rvAdapter.setIdeaList(dbHelper.getIdeaItemListByDate(dateStr))
             }
             IdeaItemCreationActivity.IdeaItemCreationFailCode -> {}
         }
@@ -36,7 +35,9 @@ class IdeaActivity : AppCompatActivity() {
     @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        setBundleTestItem(false)    // if set true, default date bundle will be set for the database filter.
+        inflateTestDateBundle()
+        setEnvironmentParameter()
         binding = ActivityScrollingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -46,10 +47,27 @@ class IdeaActivity : AppCompatActivity() {
             intent = Intent(this, IdeaItemCreationActivity::class.java)
             ideaItemRequestLauncher.launch(intent)
         }
-        setDatabaseTestItem(false)    // if set true, four items will be inserted into database for testing.
+        setDatabaseTestItem(false)    // if set true, default items will be inserted into database for testing.
         bindDatabase()
         initRecyclerView()
         clearDatabaseItem()
+    }
+
+    private fun getParameterBundle(): Bundle? {
+        return intent.extras
+    }
+
+    private fun setEnvironmentParameter() {
+        val bundle = getParameterBundle()
+        dateStr = "${bundle!!.get("year")}-${bundle.get("month")}-${bundle.get("day")}"
+    }
+
+    private fun inflateTestDateBundle() {
+        if (bundleTestItem) {
+            intent.putExtra("year", "2022")
+            intent.putExtra("month", "05")
+            intent.putExtra("day", "14")
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -76,14 +94,18 @@ class IdeaActivity : AppCompatActivity() {
         }
     }
 
+    private fun setBundleTestItem(b: Boolean) {
+        bundleTestItem = b
+    }
+
     private fun setDatabaseTestItem(b: Boolean) {
         databaseTestItem = b
     }
 
     private fun initTestIdeaItem() {
         val ideaItemList = mutableListOf(
-            IdeaItem("2022-5-10", "Keep simple, keep stupid.", "", "", "2022-5-10-22-43-24"),
-            IdeaItem("2022-5-12", "Have a heart of spring, ecstatic to in full bloom.", "", "", "2022-5-12-15-42-52"),
+            IdeaItem("2022-05-14", "Keep simple, keep stupid.", "", "", "2022-05-10-22-43-24"),
+            IdeaItem("2022-02-23", "Have a heart of spring, ecstatic to in full bloom.", "", "", "2022-02-23-15-42-52"),
             )
         for (ideaItem in ideaItemList) {
             dbHelper.insertIdeaItem(db, ideaItem)
@@ -99,29 +121,12 @@ class IdeaActivity : AppCompatActivity() {
         val layoutManager = LinearLayoutManager(this)
         rv.layoutManager = layoutManager
         val adapter = IdeaViewAdapter()
-        adapter.setIdeaList(getIdeaItemList())
+        adapter.setIdeaList(dbHelper.getIdeaItemListByDate(dateStr))
         rvAdapter = adapter
         rv.adapter = adapter
         rvIdea = rv
     }
 
-    @SuppressLint("Range")
-    private fun getIdeaItemList() : MutableList<IdeaItem> {
-        val cursor = (db?: dbHelper.writableDatabase).query("idea", null, null, null, null, null, null, null)
-        val ideaItemList = mutableListOf<IdeaItem>()
-        if (cursor.moveToFirst()) {
-            do {
-                ideaItemList.add(IdeaItem(
-                    cursor.getString(cursor.getColumnIndex("idea_date")),
-                    cursor.getString(cursor.getColumnIndex("idea_text")),
-                    cursor.getString(cursor.getColumnIndex("idea_image")),
-                    cursor.getString(cursor.getColumnIndex("idea_video")),
-                    cursor.getString(cursor.getColumnIndex("idea_tag"))
-                ))
-            } while (cursor.moveToNext())
-        }
-        cursor.close()
-        return ideaItemList
-    }
+
 
 }

@@ -1,5 +1,6 @@
 package com.bytedance.sjtu.liuyi
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
@@ -35,6 +36,26 @@ class IdeaItemDBHelper (private val context: Context, fileName: String, version:
 
     fun deleteAllItem(db: SQLiteDatabase?) {
         db?.execSQL("delete from idea")
+    }
+
+    @SuppressLint("Range")
+    fun getIdeaItemListByDate(date : String) : MutableList<IdeaItem> {
+        val cursor = writableDatabase.query("idea", null, "idea_date = ?",
+            arrayOf(date), null, null, null, null)
+        val ideaItemList = mutableListOf<IdeaItem>()
+        if (cursor.moveToFirst()) {
+            do {
+                ideaItemList.add(IdeaItem(
+                    cursor.getString(cursor.getColumnIndex("idea_date")),
+                    cursor.getString(cursor.getColumnIndex("idea_text")),
+                    cursor.getString(cursor.getColumnIndex("idea_image")),
+                    cursor.getString(cursor.getColumnIndex("idea_video")),
+                    cursor.getString(cursor.getColumnIndex("idea_tag"))
+                ))
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        return ideaItemList
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
