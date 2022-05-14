@@ -1,5 +1,6 @@
 package com.bytedance.sjtu.liuyi
 import android.annotation.SuppressLint
+import android.content.ContentValues
 import android.content.DialogInterface
 import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
@@ -97,7 +98,6 @@ class MainActivity : AppCompatActivity(), OnCalendarSelectListener, OnCalendarLo
         taskThumbnailRecyclerView.layoutManager = taskThumbnailLinearLayoutManager
         taskThumbnailAdapter = TaskThumbnailAdapter(this)
         updateTaskListFromDB()
-        Log.d("########   pos_1", taskList.toString())
         taskThumbnailAdapter.updateTaskList(taskList)
         taskThumbnailRecyclerView.adapter = taskThumbnailAdapter
     }
@@ -117,7 +117,6 @@ class MainActivity : AppCompatActivity(), OnCalendarSelectListener, OnCalendarLo
             val intent = Intent(this, TodoTaskEditActivity::class.java)
             intent.putExtra("flag", "0")            // flag = 0 表示新建 task
             startActivity(intent)
-            Log.d("#########", "Start TodoTaskEditActivity")
         }
 
         // 查看详情按钮
@@ -127,7 +126,6 @@ class MainActivity : AppCompatActivity(), OnCalendarSelectListener, OnCalendarLo
             val intent = Intent(this, AllTaskActivity::class.java)
             intent.putExtra("task_date",new_task_tag)
             startActivity(intent)
-            Log.d("##########", "Start AllTaskActivity")
         }
 
         createbutton!!.setOnClickListener{
@@ -140,10 +138,6 @@ class MainActivity : AppCompatActivity(), OnCalendarSelectListener, OnCalendarLo
             })
         }
 
-//        createIdeaItemButton!!.setOnClickListener {
-//            intent = Intent(this, IdeaItemCreationActivity::class.java)
-//            ideaItemRequestLauncher.launch(intent)
-//        }
 
         viewIdeaItemListViewButton!!.setOnClickListener {
             if (calenderYear == null) {
@@ -368,5 +362,17 @@ class MainActivity : AppCompatActivity(), OnCalendarSelectListener, OnCalendarLo
                 if (calendar.leapMonth == 0) "否" else String.format("闰%s月", calendar.leapMonth)
             )
         }
+    }
+
+    // 点击 checkbox 时的动作
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun changeTaskStatus (tag : String, view : CheckBox) {
+        val status = if (view.isChecked) "done" else "todo"
+        val newValue = ContentValues().apply {
+            put ("task_status", status)
+        }
+        todolist_db.update("task", newValue, "task_tag = ?", arrayOf(tag))
+        updateTaskListFromDB()
+        taskThumbnailAdapter.updateTaskList(taskList)
     }
 }

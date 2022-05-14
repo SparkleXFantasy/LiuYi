@@ -32,15 +32,16 @@ class TaskThumbnailAdapter(activity: MainActivity) : RecyclerView.Adapter<TaskTh
     private var taskList = mutableListOf<TaskElement>()
     private val main_activity = activity
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskElementViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.activity_tumbnail_recyclerview_entry, parent, false)       // 内容横向铺满
         val viewHolder = TaskElementViewHolder(view)
         var taskStatusCheckbox = view.findViewById<CheckBox>(R.id.task_status_checkbox)
 
         // todo: 添加对 checkbox 的点击监听事件
-//        taskStatusCheckbox.setOnClickListener {
-//            main_activity.changeTaskStatus(viewHolder.task_date.text.toString().substring(12), taskStatusCheckbox)
-//        }
+        taskStatusCheckbox.setOnClickListener {
+            main_activity.changeTaskStatus(viewHolder.task_entry_date.text.toString(), taskStatusCheckbox)
+        }
 
         // task item 长按跳转到编辑页, 仅未完成事件可编辑，已完成事件仅可查看
         viewHolder.itemView.setOnLongClickListener {
@@ -66,7 +67,6 @@ class TaskThumbnailAdapter(activity: MainActivity) : RecyclerView.Adapter<TaskTh
                 val intent = Intent(main_activity, TaskStartActivity::class.java)
                 intent.putExtra("task_tag", viewHolder.task_entry_date.text.toString())
                 intent.putExtra("flag", "1")
-                Log.d("############ Pos_3", viewHolder.task_entry_date.text.toString())
                 main_activity.startActivity(intent)
             }
         }

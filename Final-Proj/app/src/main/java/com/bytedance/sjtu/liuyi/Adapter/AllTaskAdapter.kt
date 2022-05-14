@@ -51,8 +51,8 @@ class AllTaskAdapter (activity : AllTaskActivity) : RecyclerView.Adapter<AllTask
         val duration = taskList[position].task_duration.toString()
         holder.task_duration.text = "已专注" + convertSecondsToFormattedTime(duration.toLong())
         // todo：根据完成状态设置背景
-        if (taskList[position].task_status == "todo") holder.task_card_bg.setBackgroundResource(R.drawable.card_bg_bright)
-        else holder.task_card_bg.setBackgroundResource(R.drawable.card_bg_dark)
+//        if (taskList[position].task_status == "todo") holder.task_card_bg.setBackgroundResource(R.drawable.card_bg_bright)
+//        else holder.task_card_bg.setBackgroundResource(R.drawable.card_bg_dark)
     }
 
     override fun getItemCount(): Int {
