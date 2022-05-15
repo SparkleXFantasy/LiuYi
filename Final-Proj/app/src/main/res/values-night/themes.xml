@@ -13,4 +13,21 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="Theme.LiuYi.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.LiuYi.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.LiuYi.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <!-- 启动页 -->
+    <style name="AppStartPage" parent="Theme.AppCompat.Light.NoActionBar" >
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">@drawable/start_page</item>
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimaryDark">@color/purple_700</item>
+        <item name="colorAccent">#E6B0AA</item>
+    </style>
 </resources>
