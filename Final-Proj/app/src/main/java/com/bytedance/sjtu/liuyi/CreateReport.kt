@@ -125,6 +125,7 @@ class CreateReport : AppCompatActivity() {
         mretBut?.setOnClickListener{
             val intent = Intent(this, MainActivity::class.java) // flag = 0 表示新建 task
             startActivity(intent)
+            finish()
         }
 
         mTitle!!.text = String.format("请查收来自留忆的%s月报告", curm)
