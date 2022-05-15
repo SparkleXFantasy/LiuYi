@@ -78,7 +78,6 @@ class TaskThumbnailAdapter(activity: MainActivity) : RecyclerView.Adapter<TaskTh
             main_activity.updateTaskListFromDB()
             updateTaskList(main_activity.taskList)
         }
-
         return viewHolder
     }
 

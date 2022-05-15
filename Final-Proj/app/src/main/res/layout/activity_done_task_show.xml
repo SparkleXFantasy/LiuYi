@@ -81,7 +81,7 @@
                         android:text="Title"
                         android:textSize="30sp" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/done_task_show_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -117,7 +117,7 @@
                         android:text="Description"
                         android:textSize="30sp" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/done_task_show_detail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -151,7 +151,7 @@
                         android:text="Duration"
                         android:textSize="30sp" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/done_task_show_duration"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

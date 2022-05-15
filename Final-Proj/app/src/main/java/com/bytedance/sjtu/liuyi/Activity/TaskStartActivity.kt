@@ -40,6 +40,19 @@ class TaskStartActivity : AppCompatActivity() {
         if (!showContent(task_tag)) finish()
     }
 
+    override fun onPause() {
+        super.onPause()
+        if (base_time > 0) {
+            val current_time = SystemClock.elapsedRealtime()
+            val tmpDuration = current_time - base_time
+            total_cur_duration += tmpDuration
+        }
+        task_clock.setBase(SystemClock.elapsedRealtime())
+        base_time = 0
+        updateFocusTime()
+        Toast.makeText(this, "本次专注时间已累加至总时间", Toast.LENGTH_SHORT).show()
+    }
+
     // 绑定按钮点击事件
     private fun bindClickListener() {
         clock_btn.setOnCheckedChangeListener{ _, isChecked ->
@@ -119,7 +132,7 @@ class TaskStartActivity : AppCompatActivity() {
         if (myMap["task_exist"] == "True") {
             task_tag = myMap["task_tag"]!!
             task_title_textview.setText(myMap["task_title"])
-            task_detail_textview.setText(myMap["task_title"])
+            task_detail_textview.setText(myMap["task_detail"])
             latest_duration = myMap["task_duration"]?.toLong()                      // 获取总秒数
             val duration : String = convertSecondsToFormattedTime(latest_duration)
             task_duration_textview.setText("该任务已专注${duration}")                 // 表示为 xx 时 xx 分 xx 秒

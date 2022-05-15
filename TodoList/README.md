@@ -3,10 +3,10 @@
 ### 未完成
 
 - [ ] 为每个卡片提供背景图片
-- [ ] 为 ToolBar 提供背景图
-- [ ] 调整布局，文字大小，margin 等
-- [ ] 添加 checkBox 点击事件
-- [ ] 整体接入调试
+- [x] 为 ToolBar 提供背景图
+- [x] 调整布局，文字大小，margin 等
+- [x] 添加 checkBox 点击事件
+- [x] 整体接入调试
 
 
 
@@ -29,6 +29,15 @@
 #### 顶部 ToolBar
 
 - 采用 `CoordinatorLayout`  + `AppBarLayout` 实现顶部条下拉操作以及顶部 返回 / 保存 按钮
+
+
+
+#### 主页缩略卡片
+
+- recyclerView + cardView + imageButton + checkbox, 里面是多个 linearLayout 嵌套
+- 
+
+
 
 
 
@@ -115,6 +124,8 @@
 
 
 
+
+
 ### Adapter
 
 - `AllTaskAdapter`
@@ -124,11 +135,23 @@
 
 
 
+- windowsBackground
 
 
 
+UI 布局 | 图片背景 
+
+recyclerView 返回时不刷新
 
 
 
+runOnUiThread : 将 runnable 对象返回到主线程执行
 
+
+
+**CoordinatorLayout**是在Support 包中功能强大的布局容器，它本质是一个FrameLayout，然而它允许开发者通过自定义Behavior协调各个子view,实现各种复杂酷炫的UI交互效
+
+
+
+Chronometer
 
