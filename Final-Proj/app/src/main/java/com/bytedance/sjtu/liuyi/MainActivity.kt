@@ -36,6 +36,9 @@ class MainActivity : AppCompatActivity(), OnCalendarSelectListener, OnCalendarLo
     var mCalendarView: CalendarView? = null
     var mRelativeTool: RelativeLayout? = null
 
+    private var caly:Int?=null
+    private var calm:Int?=null
+    private var cald:Int?=null
     private var calenderYear : String? = null
     private var calenderMonth : String? = null
     private var calenderDay : String? = null
@@ -157,9 +160,9 @@ class MainActivity : AppCompatActivity(), OnCalendarSelectListener, OnCalendarLo
         createbutton!!.setOnClickListener{
             startActivity(Intent().apply {
                 setClass(this@MainActivity, CreateReport::class.java)
-                putExtra("year",mCalendarView!!.curYear)
-                putExtra("month",mCalendarView!!.curMonth)
-                putExtra("day",mCalendarView!!.curDay)
+                putExtra("year",caly)
+                putExtra("month",calm)
+                putExtra("day",cald)
             })
         }
 
@@ -266,6 +269,10 @@ class MainActivity : AppCompatActivity(), OnCalendarSelectListener, OnCalendarLo
         calenderYear = calendar.year.toString()
         calenderMonth = calendar.month.toString()
         calenderDay = calendar.day.toString()
+
+        caly=calendar.year
+        calm=calendar.month
+        cald=calendar.day
         mTextYear!!.visibility = VISIBLE
         mTextMonthDay!!.text = calendar.month.toString() + "月" + calendar.day + "日"
         mTextYear!!.text = calendar.year.toString()
