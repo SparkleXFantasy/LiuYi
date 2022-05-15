@@ -3,12 +3,17 @@ package com.bytedance.sjtu.liuyi.Activity
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
+import android.icu.text.SimpleDateFormat
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.Button
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bytedance.sjtu.liuyi.Adapter.IdeaViewAdapter
@@ -16,6 +21,7 @@ import com.bytedance.sjtu.liuyi.DataClass.IdeaItem
 import com.bytedance.sjtu.liuyi.IdeaItemDBHelper
 import com.bytedance.sjtu.liuyi.R
 import com.bytedance.sjtu.liuyi.databinding.ActivityScrollingBinding
+import java.util.*
 
 class IdeaActivity : AppCompatActivity() {
 
@@ -23,6 +29,7 @@ class IdeaActivity : AppCompatActivity() {
     private lateinit var rvAdapter : IdeaViewAdapter
     private lateinit var rvIdea: RecyclerView
     private lateinit var dateStr : String
+    private lateinit var floatingCreationButton : com.google.android.material.floatingactionbutton.FloatingActionButton
     private val dbHelper = IdeaItemDBHelper(this, "idea.db", 1)
     private var db : SQLiteDatabase? = null
     private var databaseTestItem : Boolean = false
@@ -39,10 +46,10 @@ class IdeaActivity : AppCompatActivity() {
     @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setBundleTestItem(false)    // if set true, default date bundle will be set for the database filter.
-        inflateTestDateBundle()
+//        setBundleTestItem(false)    // if set true, default date bundle will be set for the database filter.
+//        inflateTestDateBundle()
         dateStr = intent.getStringExtra("task_date").toString()
-        setEnvironmentParameter()
+//        setEnvironmentParameter()
         binding = ActivityScrollingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -52,10 +59,29 @@ class IdeaActivity : AppCompatActivity() {
             intent = Intent(this, IdeaItemCreationActivity::class.java)
             ideaItemRequestLauncher.launch(intent)
         }
-        setDatabaseTestItem(false)    // if set true, default items will be inserted into database for testing.
+        bindView()
+        initBarView()
+//        setDatabaseTestItem(false)    // if set true, default items will be inserted into database for testing.
         bindDatabase()
         initRecyclerView()
 //        clearDatabaseItem()
+    }
+
+    private fun bindView() {
+        floatingCreationButton = findViewById(R.id.fab)
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun initBarView() {
+        val tagFormatter = SimpleDateFormat("yyyy-MM-dd")
+        val formattedDate = tagFormatter.format(Date())
+//        Log.d("IdeaActivity", "formattedDate: $formattedDate, DateStr: $dateStr")
+
+        if (!formattedDate.equals(dateStr)) {
+//            Log.d("IdeaActivity", "hide button.")
+            floatingCreationButton.visibility = com.google.android.material.floatingactionbutton.FloatingActionButton.INVISIBLE
+        }
     }
 
     private fun getParameterBundle(): Bundle? {
@@ -63,7 +89,7 @@ class IdeaActivity : AppCompatActivity() {
     }
 
     private fun setEnvironmentParameter() {
-        val bundle = getParameterBundle()
+//        val bundle = getParameterBundle()
 //        val year = bundle!!.get("year")
 //        val month = bundle.get("month").toString().toInt()
 //        val day = bundle.get("day").toString().toInt()
