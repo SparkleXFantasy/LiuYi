@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
+import android.view.ViewTreeObserver
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -25,6 +26,7 @@ import com.bytedance.sjtu.liuyi.Adapter.TaskThumbnailAdapter
 import com.bytedance.sjtu.liuyi.DataClass.TaskElement
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 
 class MainActivity : AppCompatActivity(), OnCalendarSelectListener, OnCalendarLongClickListener, OnMonthChangeListener, OnYearChangeListener, OnWeekChangeListener, OnViewChangeListener, OnCalendarInterceptListener, OnYearViewChangeListener, DialogInterface.OnClickListener, View.OnClickListener {
@@ -69,6 +71,17 @@ class MainActivity : AppCompatActivity(), OnCalendarSelectListener, OnCalendarLo
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        // 延长启动页时间
+        val contentView: View = findViewById(android.R.id.content)
+        contentView.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
+            override fun onPreDraw(): Boolean {
+                Timer().schedule(object:TimerTask(){
+                    override fun run() {
+                    }
+                }, Date(), 2000)
+                return true
+            }
+        })
         todolist_db = todolist_dbHelper.openDB()
         initView()
         setRecyclerView()
