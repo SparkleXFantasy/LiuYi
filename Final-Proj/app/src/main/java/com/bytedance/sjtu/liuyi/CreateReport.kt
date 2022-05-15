@@ -58,6 +58,11 @@ class CreateReport : AppCompatActivity() {
         curm=intent.extras?.getInt("month")
         curd=intent.extras?.getInt("day")
 
+        DayTodoMaxDay=curd!!
+        DayFailMaxDay=curd!!
+        DayCompleteMaxDay=curd!!
+        DayIdeaMaxDay=curd!!
+
         var time_date:String?=null
         var flag:Boolean=true
         var idea_len:Int?=null
@@ -102,6 +107,7 @@ class CreateReport : AppCompatActivity() {
                 DayTodoMax=tf+tc
                 DayTodoMaxDay=i
             }
+            TodoCompleteSum+=tc
             TodoSum+=tc+tf
             if (flag){
                 UseDaySum++
