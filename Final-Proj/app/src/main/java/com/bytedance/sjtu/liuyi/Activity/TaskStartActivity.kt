@@ -6,7 +6,6 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.SystemClock
-import android.util.Log
 import android.widget.*
 import androidx.annotation.RequiresApi
 import com.bytedance.sjtu.liuyi.TodoListDBHelper

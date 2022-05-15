@@ -41,6 +41,7 @@ class IdeaActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setBundleTestItem(false)    // if set true, default date bundle will be set for the database filter.
         inflateTestDateBundle()
+        dateStr = intent.getStringExtra("task_date").toString()
         setEnvironmentParameter()
         binding = ActivityScrollingBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -63,20 +64,20 @@ class IdeaActivity : AppCompatActivity() {
 
     private fun setEnvironmentParameter() {
         val bundle = getParameterBundle()
-        val year = bundle!!.get("year")
-        val month = bundle.get("month").toString().toInt()
-        val day = bundle.get("day").toString().toInt()
-        dateStr = "$year-"
-        dateStr += if (month < 10) {
-            "0$month-"
-        } else {
-            "$month-"
-        }
-        dateStr += if (day < 10) {
-            "0$day"
-        } else {
-            "$day"
-        }
+//        val year = bundle!!.get("year")
+//        val month = bundle.get("month").toString().toInt()
+//        val day = bundle.get("day").toString().toInt()
+//        dateStr = "$year-"
+//        dateStr += if (month < 10) {
+//            "0$month-"
+//        } else {
+//            "$month-"
+//        }
+//        dateStr += if (day < 10) {
+//            "0$day"
+//        } else {
+//            "$day"
+//        }
     }
 
     private fun inflateTestDateBundle() {

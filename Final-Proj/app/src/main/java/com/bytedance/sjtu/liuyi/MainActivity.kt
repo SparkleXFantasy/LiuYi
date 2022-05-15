@@ -47,6 +47,7 @@ class MainActivity : AppCompatActivity(), OnCalendarSelectListener, OnCalendarLo
     var createIdeaItemButton: ImageButton?=null
     var viewIdeaItemListViewButton : ImageButton? = null
     var createbutton: ImageButton?=null
+    var clear_all_task_of_day_btn : ImageButton?=null
     private var mYear = 0
 //        var mCalendarLayout: CalendarLayout? = null
 
@@ -121,27 +122,26 @@ class MainActivity : AppCompatActivity(), OnCalendarSelectListener, OnCalendarLo
 
         // 查看详情按钮
         allTaskAtOneDayBtn.setOnClickListener{
-            if (calenderYear == null) {
-                calenderYear = mCalendarView!!.curYear.toString()
-            }
-            if (calenderMonth == null) {
-                calenderMonth = mCalendarView!!.curMonth.toString()
-            }
-            if (calenderDay == null) {
-                calenderDay = mCalendarView!!.curDay.toString()
-            }
+//            if (calenderYear == null) {
+//                calenderYear = mCalendarView!!.curYear.toString()
+//            }
+//            if (calenderMonth == null) {
+//                calenderMonth = mCalendarView!!.curMonth.toString()
+//            }
+//            if (calenderDay == null) {
+//                calenderDay = mCalendarView!!.curDay.toString()
+//            }
             val dateFormatterForDate = DateTimeFormatter.ofPattern("yyyy-MM-dd")
             val new_task_tag = dateFormatterForDate.format(LocalDateTime.now())
             val intent = Intent(this, AllTaskActivity::class.java)
             intent.putExtra("task_date",new_task_tag)
-            intent.putExtra("year",calenderYear)
-            intent.putExtra("month",calenderMonth)
-            intent.putExtra("day",calenderDay)
+//            intent.putExtra("year",calenderYear)
+//            intent.putExtra("month",calenderMonth)
+//            intent.putExtra("day",calenderDay)
             startActivity(intent)
         }
 
         createbutton!!.setOnClickListener{
-//            val curym:String = String.format("%4d-%")
             startActivity(Intent().apply {
                 setClass(this@MainActivity, CreateReport::class.java)
                 putExtra("year",mCalendarView!!.curYear)
@@ -152,21 +152,32 @@ class MainActivity : AppCompatActivity(), OnCalendarSelectListener, OnCalendarLo
 
 
         viewIdeaItemListViewButton!!.setOnClickListener {
-            if (calenderYear == null) {
-                calenderYear = mCalendarView!!.curYear.toString()
-            }
-            if (calenderMonth == null) {
-                calenderMonth = mCalendarView!!.curMonth.toString()
-            }
-            if (calenderDay == null) {
-                calenderDay = mCalendarView!!.curDay.toString()
-            }
+//            if (calenderYear == null) {
+//                calenderYear = mCalendarView!!.curYear.toString()
+//            }
+//            if (calenderMonth == null) {
+//                calenderMonth = mCalendarView!!.curMonth.toString()
+//            }
+//            if (calenderDay == null) {
+//                calenderDay = mCalendarView!!.curDay.toString()
+//            }
+            val dateFormatterForDate = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+            val new_task_date = dateFormatterForDate.format(LocalDateTime.now())
             startActivity(Intent().apply {
                 setClass(this@MainActivity, IdeaActivity::class.java)
-                putExtra("year",calenderYear)
-                putExtra("month",calenderMonth)
-                putExtra("day",calenderDay)
+//                putExtra("year",calenderYear)
+//                putExtra("month",calenderMonth)
+//                putExtra("day",calenderDay)
+                putExtra("task_date", new_task_date)
             })
+        }
+
+        clear_all_task_of_day_btn?.setOnClickListener() {
+            val dateFormatterForDate = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+            val task_date = dateFormatterForDate.format(LocalDateTime.now())
+            todolist_db.delete("task", "task_date = ?", arrayOf(task_date))
+            updateTaskListFromDB()
+            taskThumbnailAdapter.updateTaskList(taskList)
         }
     }
 
@@ -180,7 +191,7 @@ class MainActivity : AppCompatActivity(), OnCalendarSelectListener, OnCalendarLo
         allTaskAtOneDayBtn = findViewById(R.id.all_task_at_one_day_btn)
         createbutton=findViewById(R.id.createreport)
         addNewTaskBtn = findViewById(R.id.add_new_task)
-
+        clear_all_task_of_day_btn = findViewById(R.id.clear_all_task_of_day_btn)
 //        createIdeaItemButton = findViewById(R.id.idea_btn)
         viewIdeaItemListViewButton = findViewById(R.id.idea_btn)
         mCalendarView!!.setOnYearChangeListener(this)
