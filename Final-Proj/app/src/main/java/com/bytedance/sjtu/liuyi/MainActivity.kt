@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity(), OnCalendarSelectListener, OnCalendarLo
     private lateinit var allTaskAtOneDayBtn: ImageButton
     private lateinit var addNewTaskBtn : ImageButton
     private lateinit var taskThumbnailAdapter: TaskThumbnailAdapter
-    private var taskList = mutableListOf<TaskElement>()
+    var taskList = mutableListOf<TaskElement>()
     var isPause = false
     var ideabutton: Button?=null
 
@@ -104,7 +104,7 @@ class MainActivity : AppCompatActivity(), OnCalendarSelectListener, OnCalendarLo
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun updateTaskListFromDB() {
+    fun updateTaskListFromDB() {
         val myDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         val today = myDateFormatter.format(LocalDateTime.now())
         taskList.clear()

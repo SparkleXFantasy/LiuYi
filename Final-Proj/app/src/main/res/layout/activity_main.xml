@@ -166,8 +166,8 @@
                 android:id="@+id/clear_all_task_of_day_btn" />
 
             <androidx.constraintlayout.utils.widget.ImageFilterButton
-                android:layout_width="32dp"
-                android:layout_height="35dp"
+                android:layout_width="30dp"
+                android:layout_height="37dp"
                 android:background="@drawable/report_btn"
                 android:layout_gravity="center"
                 android:layout_marginLeft="6dp"

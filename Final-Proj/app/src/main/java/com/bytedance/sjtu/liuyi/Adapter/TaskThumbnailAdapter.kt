@@ -10,7 +10,6 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.bytedance.sjtu.liuyi.MainActivity
-import com.bytedance.sjtu.liuyi.Activity.TodoTaskEditActivity
 import com.bytedance.sjtu.liuyi.DataClass.TaskElement
 import com.bytedance.sjtu.liuyi.R
 import java.text.SimpleDateFormat
@@ -18,9 +17,9 @@ import java.util.*
 import kotlin.Comparator
 import android.content.Intent
 import android.util.Log
-import com.bytedance.sjtu.liuyi.Activity.DoneTaskShowActivity
-import com.bytedance.sjtu.liuyi.Activity.TaskStartActivity
-import com.bytedance.sjtu.liuyi.Activity.convertSecondsToFormattedTime
+import android.widget.ImageButton
+import com.bytedance.sjtu.liuyi.Activity.*
+import com.bytedance.sjtu.liuyi.TodoListDBHelper
 import org.w3c.dom.Text
 
 /**
@@ -37,6 +36,9 @@ class TaskThumbnailAdapter(activity: MainActivity) : RecyclerView.Adapter<TaskTh
         val view = LayoutInflater.from(parent.context).inflate(R.layout.activity_tumbnail_recyclerview_entry, parent, false)       // 内容横向铺满
         val viewHolder = TaskElementViewHolder(view)
         var taskStatusCheckbox = view.findViewById<CheckBox>(R.id.task_status_checkbox)
+        var delete_single_task_btn = view.findViewById<ImageButton>(R.id.delete_single_task_btn)
+        var dbHelper = TodoListDBHelper(main_activity, TODOLIST_DB_NAME)
+        var db = dbHelper.openDB()
 
         // todo: 添加对 checkbox 的点击监听事件
         taskStatusCheckbox.setOnClickListener {
@@ -70,6 +72,13 @@ class TaskThumbnailAdapter(activity: MainActivity) : RecyclerView.Adapter<TaskTh
                 main_activity.startActivity(intent)
             }
         }
+
+        delete_single_task_btn.setOnClickListener {
+            db.delete("task", "task_tag = ? ", arrayOf(viewHolder.task_entry_date.text.toString()))
+            main_activity.updateTaskListFromDB()
+            updateTaskList(main_activity.taskList)
+        }
+
         return viewHolder
     }
 

@@ -67,6 +67,16 @@
                 android:layout_gravity="center"
                 android:layout_margin="10dp" />
 
+            <androidx.constraintlayout.utils.widget.ImageFilterButton
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:background="@drawable/delete_single_task_btn_3"
+                android:layout_gravity="center"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="-10dp"
+                android:layout_marginVertical="5dp"
+                android:id="@+id/delete_single_task_btn" />
+
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.cardview.widget.CardView>
 </androidx.appcompat.widget.LinearLayoutCompat>
