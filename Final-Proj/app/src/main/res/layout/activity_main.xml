@@ -156,6 +156,16 @@
                 android:id="@+id/all_task_at_one_day_btn" />
 
             <androidx.constraintlayout.utils.widget.ImageFilterButton
+                android:layout_width="30dp"
+                android:layout_height="32dp"
+                android:background="@drawable/clear_all_btn"
+                android:layout_gravity="center"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginVertical="5dp"
+                android:id="@+id/clear_all_task_of_day_btn" />
+
+            <androidx.constraintlayout.utils.widget.ImageFilterButton
                 android:layout_width="32dp"
                 android:layout_height="35dp"
                 android:background="@drawable/report_btn"

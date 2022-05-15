@@ -25,9 +25,9 @@ class AllTaskActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         this.setContentView(R.layout.activity_all_task)
         val date = intent.extras?.getString("task_date").toString()
-        val year = intent.extras?.getString("year").toString()
-        val month = intent.extras?.getString("year").toString()
-        val day = intent.extras?.getString("year").toString()
+//        val year = intent.extras?.getString("year").toString()
+//        val month = intent.extras?.getString("month").toString()
+//        val day = intent.extras?.getString("day").toString()
         db = dbHelper.openDB()
 
         // 添加顶部返回按钮
@@ -46,9 +46,10 @@ class AllTaskActivity : AppCompatActivity() {
         fab_idea = findViewById<FloatingActionButton>(R.id.fab_idea)
         fab_idea.setOnClickListener {
             var intent = Intent(this, IdeaActivity::class.java)
-            intent.putExtra("year", year)
-            intent.putExtra("month", month)
-            intent.putExtra("day", day)
+//            intent.putExtra("year", year)
+//            intent.putExtra("month", month)
+//            intent.putExtra("day", day)
+            intent.putExtra("task_date", date)
             startActivity(intent)
         }
 
